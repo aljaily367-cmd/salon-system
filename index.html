@@ -1,272 +1,347 @@
 <!doctype html>
-<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>منظومة الصالون</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <style>
-:root{--bg:#f2f4f3;--card:#fff;--ink:#1d2a2c;--mut:#6b7775;--line:#dfe6e4;--pri:#1f3a3d;--ok:#137a4b;--okb:#e3f3ea;--warn:#a96d00;--warnb:#fff3d6;--bad:#c0182d;--badb:#fde4e6;
- --f:'IBM Plex Sans Arabic',Tahoma,sans-serif}
-@media (prefers-color-scheme:dark){:root{--bg:#121a1b;--card:#1b2526;--ink:#e7eeec;--mut:#9aa8a5;--line:#2c3a3b;--pri:#2c5459;--okb:#173326;--warnb:#3a2e12;--badb:#3d1a1e;color-scheme:dark}}
-*{box-sizing:border-box}body{margin:0;font:15px var(--f);background:var(--bg);color:var(--ink)}
-header{background:var(--pri);color:#fff;padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-header b{font-size:17px}header .sp{flex:1}
-nav{display:flex;gap:6px;flex-wrap:wrap;padding:10px 16px;background:var(--card);border-bottom:1px solid var(--line)}
-nav button{background:transparent;border:1px solid var(--line);color:var(--ink)}nav button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
-main{padding:16px;max-width:1200px;margin:auto;display:grid;gap:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;min-width:0}
-h2{font-size:17px;margin:0 0 10px}h3{font-size:15px;margin:10px 0 6px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
-.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
-.k{background:var(--bg);border-radius:10px;padding:10px}.k small{color:var(--mut)}.k b{display:block;font-size:22px;font-variant-numeric:tabular-nums}
-button{font:600 14px var(--f);padding:8px 12px;border-radius:9px;border:0;background:var(--pri);color:#fff;cursor:pointer}
-button.g{background:var(--ok)}button.o{background:var(--bg);color:var(--ink);border:1px solid var(--line)}button.r{background:var(--badb);color:var(--bad)}
-button:disabled{opacity:.5}
-input,select,textarea{font:14px var(--f);padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);width:100%}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.row>*{flex:1;min-width:120px}.row>button{flex:0 0 auto;min-width:0}
-.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:7px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}th{color:var(--mut);font-weight:600}
+:root{--navy:#1e3a8a;--navy2:#2c4aa0;--bg:#eef1f7;--card:#fff;--ink:#1c2333;--mut:#667085;--line:#e3e7f0;--soft:#e8eefc;
+ --ok:#15803d;--okb:#dcfce7;--wt:#a16207;--wtb:#fef3c7;--bad:#b91c1c;--badb:#fee2e2;--red:#dc2626;--f:'IBM Plex Sans Arabic',Tahoma,sans-serif}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;font:15px var(--f);background:var(--bg);color:var(--ink)}
+button,input,select,textarea{font:inherit}
+/* top bar */
+.bar{background:var(--navy);color:#fff;display:flex;align-items:center;gap:12px;padding:10px 16px;position:sticky;top:0;z-index:20}
+.logo{background:#fff;color:var(--navy);border-radius:10px;width:36px;height:36px;display:grid;place-items:center;font-size:20px;flex:none}
+.brand b{display:block;font-size:16px}.brand small{opacity:.8;font-size:11px}
+.sp{flex:1}.usr{background:var(--navy2);border-radius:20px;padding:5px 12px;font-size:13px;white-space:nowrap}
+.ham{display:none;background:var(--navy2);border:0;color:#fff;border-radius:8px;padding:6px 10px;font-size:18px}
+.sub{background:#fff;font-size:12px;color:var(--mut);padding:6px 16px;border-bottom:1px solid var(--line);display:flex;gap:10px;flex-wrap:wrap}
+.dot{color:#16a34a}
+/* layout */
+.wrap{display:flex;min-height:calc(100% - 100px)}
+aside{width:240px;flex:none;background:#fff;border-left:1px solid var(--line);padding:10px;overflow:auto}
+.sec{background:var(--soft);color:var(--navy);font-weight:700;border-radius:8px;padding:8px 10px;margin:10px 0 4px;font-size:14px}
+.it{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border-radius:8px;cursor:pointer;font-size:14px}
+.it:hover{background:#f5f7fc}.it.on{background:var(--navy);color:#fff}
+.bd{background:var(--red);color:#fff;border-radius:10px;padding:0 7px;font-size:12px;min-width:20px;text-align:center}
+main{flex:1;padding:18px;min-width:0;max-width:1200px}
+h2{color:var(--navy);font-size:18px;margin:4px 0 12px}h3{font-size:15px;margin:14px 0 8px}
+/* tiles */
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:16px;margin-bottom:18px}
+.tile{text-align:center;cursor:pointer}.tb{background:#fff;border-radius:16px;height:100px;display:grid;place-items:center;box-shadow:0 2px 8px #0000000f;position:relative;transition:transform .12s}
+.tile:hover .tb{transform:translateY(-2px)}.tb .bd{position:absolute;top:8px;left:8px}.tile p{margin:8px 0 0;font-weight:600;font-size:14px}
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+.k{background:#fff;border-radius:12px;padding:12px;box-shadow:0 2px 8px #0000000d}.k small{color:var(--mut)}.k b{display:block;font-size:22px;font-variant-numeric:tabular-nums}
+.card{background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px #0000000d;margin-bottom:14px;min-width:0}
+/* forms */
+label{display:block;font-size:13px;color:var(--mut);margin:12px 0 5px;font-weight:600}
+input,select,textarea{width:100%;border:1px solid #d5dbe8;border-radius:10px;padding:10px;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:2px solid #93a4cf;border-color:transparent}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{border:1px solid #d5dbe8;border-radius:10px;padding:9px 12px;cursor:pointer;background:#fff;font-size:14px}
+.chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.seg{display:flex;gap:8px}.seg button{flex:1;border:1px solid #d5dbe8;border-radius:10px;padding:11px;font-weight:600;background:#fff;cursor:pointer}
+.seg button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.cam{display:block;border:2px dashed #93a4cf;border-radius:12px;padding:16px;text-align:center;color:var(--navy);font-weight:600;background:#f3f6fd;cursor:pointer}
+.cam img{max-width:100%;max-height:220px;border-radius:8px;display:block;margin:0 auto 6px}
+.btn{border:0;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer;background:var(--navy);color:#fff}
+.btn.g{background:#16a34a}.btn.o{background:#fff;color:var(--ink);border:1px solid #d5dbe8}.btn.r{background:var(--badb);color:var(--bad)}
+.btn.big{width:100%;padding:14px;font-size:16px;margin-top:16px}.btn:disabled{opacity:.5;cursor:default}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}.row>*{flex:1;min-width:140px}.row>.btn{flex:0 0 auto;min-width:0}
+.form{max-width:520px}
+/* tables */
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px;background:#fff}
+th,td{padding:9px;border-bottom:1px solid #eef0f6;text-align:right;white-space:nowrap}th{background:#f3f6fd;color:var(--navy);font-weight:600}
 td{font-variant-numeric:tabular-nums}
-.pill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:12px;font-weight:600}
-.waiting{background:var(--warnb);color:var(--warn)}.in_service{background:#dde8fb;color:#2d5ea8}.done{background:#efe3fb;color:#6b3fa0}.paid,.matched,.approved,.booked{background:var(--okb);color:var(--ok)}.cancelled,.mismatch,.rejected,.no_show{background:var(--badb);color:var(--bad)}.pending,.checked_in{background:var(--warnb);color:var(--warn)}
-.note{font-size:13px;color:var(--mut)}.lock{background:var(--bg);border:1px dashed var(--line);border-radius:8px;padding:8px;font-size:13px;color:var(--mut)}
-#toast{position:fixed;bottom:16px;left:16px;right:16px;max-width:520px;margin:auto;padding:12px;border-radius:10px;color:#fff;display:none;z-index:9}
-.login{max-width:380px;margin:40px auto}
-.chip{display:inline-block;margin:2px;padding:6px 10px;border-radius:8px;border:1px solid var(--line);cursor:pointer;background:var(--card)}.chip.on{background:var(--pri);color:#fff}
+.pill{display:inline-block;padding:2px 9px;border-radius:12px;font-size:12px;font-weight:700}
+.pending{background:var(--wtb);color:var(--wt)}.verified,.confirmed{background:var(--okb);color:var(--ok)}.rejected,.voided{background:var(--badb);color:var(--bad)}
+.note{font-size:13px;color:var(--mut)}.lock{background:#f6f7fb;border:1px dashed #cdd3e3;border-radius:10px;padding:10px;font-size:13px;color:var(--mut)}
+.okbox{background:var(--okb);border-radius:12px;padding:14px;color:var(--ok);font-weight:600}
+#toast{position:fixed;bottom:16px;left:16px;right:16px;max-width:520px;margin:auto;padding:12px 14px;border-radius:12px;color:#fff;display:none;z-index:50;font-weight:600}
+.center{max-width:400px;margin:40px auto}
+.modal{position:fixed;inset:0;background:#0007;display:grid;place-items:center;z-index:40;padding:16px}
+.modal>div{background:#fff;border-radius:14px;padding:16px;max-width:560px;width:100%;max-height:90vh;overflow:auto}
+@media (max-width:820px){
+ .ham{display:block}aside{position:fixed;top:56px;bottom:0;right:0;z-index:30;transform:translateX(100%);transition:transform .2s;box-shadow:-4px 0 20px #0002}
+ aside.open{transform:none}.usr{display:none}main{padding:12px}.tiles{grid-template-columns:repeat(3,1fr);gap:10px}.tb{height:84px}.tb svg{width:42px;height:42px}
+}
 </style></head><body>
-<header><b>منظومة الصالون</b><span id="who" class="sp"></span><button class="o" id="bookBtn" onclick="showBooking()">صفحة الحجز للعميل</button><button class="o" id="outBtn" hidden onclick="logout()">خروج</button></header>
-<nav id="nav" hidden></nav>
-<main id="app"></main>
+<div class="bar"><button class="ham" id="ham" aria-label="القائمة">☰</button><div class="logo">✂</div>
+ <div class="brand"><b id="sname">منظومة الصالون</b><small id="ssub">إدارة الصالونات</small></div><div class="sp"></div><div class="usr" id="who" hidden></div>
+ <button class="btn o" id="outBtn" hidden style="padding:6px 12px">خروج</button></div>
+<div class="sub"><span><span class="dot" id="conn">●</span> <span id="connT">متصل بالخادم</span></span><span id="clock"></span></div>
+<div class="wrap"><aside id="side" hidden></aside><main id="app"></main></div>
 <div id="toast"></div>
 <script>
 const SB_URL='https://hnztsplyaypzclwwzubx.supabase.co', SB_KEY='sb_publishable_9auqTD0ZqExwsTgZXnEX4A_bLNf4W4s';
 const sb=supabase.createClient(SB_URL,SB_KEY);
-let me=null, view=null, cache={};
 const $=s=>document.querySelector(s), app=$('#app');
+let ME=null, view=null, badges={}, cache={};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const n2=x=>Number(x||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-const tm=d=>d?new Date(d).toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'}):'—';
-const mins=d=>d?Math.round((Date.now()-new Date(d))/60000):0;
-const ST={waiting:'ينتظر',in_service:'على الكرسي',done:'بانتظار الدفع',paid:'مدفوع',cancelled:'ملغي',pending:'معلّق',approved:'معتمد',rejected:'مرفوض',sent:'أُرسلت',matched:'مطابق',mismatch:'غير مطابق',booked:'محجوز',checked_in:'وصل',no_show:'لم يحضر'};
+const today=()=>new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Riyadh'});
+const dt=d=>new Date(d).toLocaleString('ar-SA-u-ca-gregory-nu-latn',{timeZone:'Asia/Riyadh',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+const M={cash:'كاش',card:'شبكة',transfer:'تحويل'}, ST={pending:'بانتظار المطابقة',verified:'مطابق',rejected:'مرفوض',voided:'ملغي',confirmed:'مستلم'};
+const R={owner:'المالك',supervisor:'المشرف',finance:'المالية',barber:'حلاق'};
 const pill=s=>`<span class="pill ${s}">${ST[s]||s}</span>`;
-function toast(m,ok=true){const t=$('#toast');t.textContent=m;t.style.background=ok?'var(--ok)':'var(--bad)';t.style.display='block';clearTimeout(t._h);t._h=setTimeout(()=>t.style.display='none',4000)}
-async function rpc(fn,args,msg){const {data,error}=await sb.rpc(fn,args);if(error){toast(error.message,false);throw error}if(msg)toast(msg);return data}
-async function q(t,sel='*',f=x=>x){const {data,error}=await f(sb.from(t).select(sel));if(error){toast(error.message,false);return[]}return data}
+function toast(m,ok=true){const t=$('#toast');t.textContent=m;t.style.background=ok?'#16a34a':'#b91c1c';t.style.display='block';clearTimeout(t._h);t._h=setTimeout(()=>t.style.display='none',4500)}
+async function rpc(fn,args){const {data,error}=await sb.rpc(fn,args);if(error){toast(error.message,false);throw error}return data}
+async function sel(t,cols='*',f=x=>x){const {data,error}=await f(sb.from(t).select(cols));if(error){toast(error.message,false);return[]}return data}
+setInterval(()=>{const d=new Date();$('#clock').textContent='ميلادي '+d.toLocaleDateString('en-CA',{timeZone:'Asia/Riyadh'}).replace(/-/g,'/')+' · هجري '+d.toLocaleDateString('ar-SA-u-ca-islamic-umalqura-nu-latn',{timeZone:'Asia/Riyadh'})+' · '+d.toLocaleTimeString('ar-SA-u-nu-latn',{timeZone:'Asia/Riyadh'})},1000);
+window.addEventListener('offline',()=>{$('#conn').style.color='#dc2626';$('#connT').textContent='غير متصل'});
+window.addEventListener('online',()=>{$('#conn').style.color='#16a34a';$('#connT').textContent='متصل بالخادم'});
 
-const MENU={
- reception:[['queue','الدور'],['bookings','حجوزات اليوم'],['cashier','الدفع'],['packages','الباقات']],
- barber:[['chair','كرسيي'],['myclients','عملائي'],['mypay','عمولتي']],
- supervisor:[['board','لوحة اليوم'],['queue','الدور'],['bookings','الحجوزات'],['cashier','الدفع'],['approvals','الموافقات'],['campaigns','الحملات'],['packages','الباقات']],
- finance:[['close','الإقفال اليومي'],['commissions','العمولات'],['incidents','البلاغات'],['reports','التقارير']],
- admin:[['settings','الإعدادات'],['reports','التقارير'],['commissions','العمولات'],['campaigns','الحملات'],['audit','سجل التدقيق'],['incidents','البلاغات']]};
+/* ---------- icons (flat, two-tone) ---------- */
+const IC={
+ plus:'<rect x="6" y="6" width="40" height="40" rx="10" fill="#16a34a"/><path d="M26 15v22M15 26h22" stroke="#fff" stroke-width="6" stroke-linecap="round"/>',
+ scis:'<circle cx="16" cy="37" r="7" fill="none" stroke="#7c3a5a" stroke-width="5"/><circle cx="35" cy="37" r="7" fill="none" stroke="#16a3a0" stroke-width="5"/><path d="M20 31 38 6M31 31 13 6" stroke="#7c3a5a" stroke-width="5" stroke-linecap="round"/>',
+ ppl:'<circle cx="18" cy="16" r="8" fill="#7c3a5a"/><circle cx="34" cy="18" r="7" fill="#f97316"/><path d="M4 44c0-13 28-13 28 0z" fill="#16a3a0"/><path d="M26 44c2-10 22-10 22 0z" fill="#f97316"/>',
+ cash:'<rect x="4" y="14" width="42" height="24" rx="5" fill="#16a34a"/><circle cx="25" cy="26" r="7" fill="#fff"/><rect x="8" y="10" width="34" height="4" rx="2" fill="#86efac"/>',
+ coin:'<ellipse cx="18" cy="37" rx="13" ry="7" fill="#f59e0b"/><rect x="5" y="29" width="26" height="8" fill="#f59e0b"/><circle cx="34" cy="16" r="12" fill="#16a3a0"/><rect x="32" y="9" width="4" height="14" rx="2" fill="#fff"/>',
+ chart:'<circle cx="24" cy="26" r="18" fill="#f97316"/><path d="M24 8a18 18 0 0 1 18 18H24z" fill="#7c3a5a"/><circle cx="24" cy="26" r="7" fill="#fff"/>',
+ check:'<rect x="8" y="4" width="34" height="44" rx="6" fill="#f59e0b"/><rect x="17" y="1" width="16" height="8" rx="3" fill="#16a3a0"/><path d="m16 27 6 6 12-13" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/>',
+ card:'<rect x="4" y="11" width="42" height="28" rx="5" fill="#2563eb"/><rect x="4" y="17" width="42" height="6" fill="#1e3a8a"/><rect x="10" y="29" width="14" height="4" rx="2" fill="#fff"/>',
+ flag:'<rect x="12" y="6" width="5" height="40" rx="2" fill="#7c3a5a"/><path d="M17 8h26l-6 9 6 9H17z" fill="#ef4444"/>',
+ gear:'<circle cx="25" cy="25" r="17" fill="#64748b"/><circle cx="25" cy="25" r="7" fill="#fff"/><path d="M25 2v8M25 40v8M2 25h8M40 25h8" stroke="#64748b" stroke-width="7"/>',
+ list:'<rect x="6" y="6" width="38" height="38" rx="8" fill="#2563eb"/><path d="M15 17h20M15 25h20M15 33h12" stroke="#fff" stroke-width="4" stroke-linecap="round"/>',
+ dash:'<path d="M5 34a20 20 0 0 1 40 0z" fill="#16a3a0"/><rect x="8" y="38" width="34" height="5" rx="2" fill="#1e3a8a"/><path d="m25 34 10-16" stroke="#1c2333" stroke-width="5" stroke-linecap="round"/><circle cx="25" cy="34" r="4" fill="#f97316"/>',
+ store:'<path d="M6 20 10 8h30l4 12z" fill="#f97316"/><rect x="8" y="20" width="34" height="24" rx="3" fill="#2563eb"/><rect x="20" y="30" width="10" height="14" fill="#fff"/>',
+ staff:'<circle cx="25" cy="15" r="9" fill="#2563eb"/><path d="M8 46c0-16 34-16 34 0z" fill="#16a3a0"/><rect x="19" y="30" width="12" height="4" rx="2" fill="#fff"/>',
+ key:'<circle cx="17" cy="25" r="11" fill="#f59e0b"/><circle cx="17" cy="25" r="4" fill="#fff"/><path d="M27 25h18M38 25v8M44 25v6" stroke="#f59e0b" stroke-width="5" stroke-linecap="round"/>'};
+const ic=(k,s=54)=>`<svg width="${s}" height="${s}" viewBox="0 0 50 50" aria-hidden="true">${IC[k]}</svg>`;
 
-async function init(){const {data:{session}}=await sb.auth.getSession();if(!session)return loginView();
- const {data}=await sb.from('profiles').select('*').eq('user_id',session.user.id).single();
- if(!data){toast('الحساب غير مربوط بدور',false);return logout()}
- me=data;$('#who').textContent=`${me.full_name} · ${({reception:'الاستقبال/الكاشير',barber:'حلاق',supervisor:'المشرف',finance:'المالية',admin:'الإدارة'})[me.role]}`;
- $('#outBtn').hidden=false;$('#bookBtn').hidden=true;
- const nav=$('#nav');nav.hidden=false;nav.innerHTML=MENU[me.role].map(([k,l])=>`<button data-v="${k}">${l}</button>`).join('');
- nav.onclick=e=>{if(e.target.dataset.v)go(e.target.dataset.v)};
- await loadRefs();go(MENU[me.role][0][0]);
- setInterval(()=>{if(['queue','board','chair','cashier'].includes(view)&&!document.activeElement.matches('input,select,textarea'))go(view)},20000)}
-async function loadRefs(){cache.services=await q('services','*',x=>x.eq('active',true).order('price'));cache.products=await q('products','*',x=>x.eq('active',true));
- cache.barbers=await q('profiles','user_id,full_name,chair_no,role',x=>x.eq('role','barber').eq('active',true).order('chair_no'));cache.packages=await q('packages','*',x=>x.eq('active',true))}
-function go(v){view=v;document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));V[v]()}
-function loginView(){$('#nav').hidden=true;$('#outBtn').hidden=true;$('#bookBtn').hidden=false;$('#who').textContent='';
- app.innerHTML=`<div class="card login"><h2>تسجيل الدخول</h2><form id="lf" class="grid" style="grid-template-columns:1fr">
- <input id="em" type="email" placeholder="البريد" required><input id="pw" type="password" placeholder="كلمة المرور" required><button>دخول</button></form>
- <p class="note">الصلاحيات تُفرض في الخادم حسب الدور، لا في الشاشة.</p></div>`;
- $('#lf').onsubmit=async e=>{e.preventDefault();const {error}=await sb.auth.signInWithPassword({email:$('#em').value.trim(),password:$('#pw').value});if(error)return toast('بيانات الدخول غير صحيحة',false);init()}}
-async function logout(){await sb.auth.signOut();me=null;loginView()}
+/* ---------- menus per role ---------- */
+const MENUS={
+ barber:[['الرئيسية',[['home','لوحتي','dash']]],['عملي',[['record','تسجيل حلاقة','plus'],['myops','عملياتي','scis'],['mycust','عملائي','ppl']]],['المالية',[['mycash','عهدتي النقدية','cash'],['mypay','عمولتي','chart']]]],
+ supervisor:[['الرئيسية',[['home','لوحة القيادة','dash']]],['العمليات',[['ops','عمليات الحلاقين','scis'],['handovers','استلام العهد','cash']]],['الرقابة',[['incidents','البلاغات','flag']]]],
+ finance:[['الرئيسية',[['home','لوحة القيادة','dash']]],['العمليات',[['ops','عمليات الحلاقين','scis'],['handovers','استلام العهد','cash']]],['المالية',[['cardmatch','مطابقة الشبكة','card'],['commissions','العمولات','chart'],['incidents','البلاغات','flag']]]],
+ owner:[['الرئيسية',[['home','لوحة القيادة','dash']]],['العمليات',[['ops','عمليات الحلاقين','scis'],['handovers','استلام العهد','cash']]],['المالية',[['cardmatch','مطابقة الشبكة','card'],['commissions','العمولات','chart'],['incidents','البلاغات','flag']]],['الإعدادات',[['services','الخدمات والأسعار','list'],['staff','الموظفون','staff'],['salon','بيانات الصالون','store']]]],
+ platform:[['المزوّد',[['salons','الصالونات','store']]]]};
+function menu(){const role=ME.profile?.role||'platform';let m=JSON.parse(JSON.stringify(MENUS[role]));if(ME.platform&&role!=='platform')m.push(...MENUS.platform);return m}
+function renderSide(){$('#side').innerHTML=menu().map(([s,items])=>`<div class="sec">${s}</div>`+items.map(([k,l])=>`<div class="it ${view===k?'on':''}" data-v="${k}"><span>${l}</span>${badges[k]?`<span class="bd">${badges[k]}</span>`:''}</div>`).join('')).join('')+
+ `<div class="sec">الحساب</div><div class="it ${view==='pw'?'on':''}" data-v="pw"><span>تغيير كلمة المرور</span></div>`}
+$('#side').onclick=e=>{const it=e.target.closest('.it');if(it){go(it.dataset.v);$('#side').classList.remove('open')}};
+$('#ham').onclick=()=>$('#side').classList.toggle('open');
+$('#outBtn').onclick=async()=>{await sb.auth.signOut();location.reload()};
+function tilesFor(sec){const m=menu().find(x=>x[0]===sec);return m?`<h2>${sec}</h2><div class="tiles">`+m[1].filter(x=>x[0]!=='home').map(([k,l,i])=>`<div class="tile" data-v="${k}"><div class="tb">${badges[k]?`<span class="bd">${badges[k]}</span>`:''}${ic(i)}</div><p>${l}</p></div>`).join('')+'</div>':''}
+app.addEventListener('click',e=>{const t=e.target.closest('.tile');if(t)go(t.dataset.v)});
+async function go(v){view=v;renderSide();app.innerHTML='<p class="note">جارٍ التحميل…</p>';try{await V[v]()}catch(e){console.error(e);app.innerHTML='<div class="card">تعذّر تحميل الصفحة. تحقق من الاتصال ثم أعد المحاولة.</div>'}window.scrollTo(0,0)}
+async function refreshBadges(){const r=ME.profile?.role;badges={};
+ if(['owner','supervisor','finance'].includes(r)){const p=await sel('operations','id',x=>x.eq('status','pending').neq('method','cash'));badges.ops=p.length||'';
+  const h=await sel('cash_handovers','id',x=>x.eq('status','pending'));badges.handovers=h.length||''}
+ if(r==='barber'){const c=await rpc('my_cash');badges.mycash=c.count||''}renderSide()}
+
+/* ---------- boot ---------- */
+async function boot(){const {data:{session}}=await sb.auth.getSession();if(!session)return loginView();
+ ME=await rpc('me');
+ if(!ME.profile&&!ME.platform){app.innerHTML='<div class="card center">هذا الحساب غير مربوط بأي صالون. تواصل مع مالك الصالون.</div>';$('#outBtn').hidden=false;return}
+ if(ME.profile&&!ME.profile.active){app.innerHTML='<div class="card center">تم إيقاف حسابك. تواصل مع مالك الصالون.</div>';$('#outBtn').hidden=false;return}
+ $('#sname').textContent=ME.tenant?.name||'لوحة المزوّد';$('#ssub').textContent=ME.tenant?(ME.branch||'منظومة الصالون'):'منظومة الصالون';
+ $('#who').textContent=ME.profile?`${ME.profile.full_name} · ${R[ME.profile.role]}${ME.profile.chair_no?' · كرسي '+ME.profile.chair_no:''}`:'المزوّد';
+ $('#who').hidden=false;$('#outBtn').hidden=false;$('#side').hidden=false;
+ if(ME.profile?.must_change_password)return go('pw');
+ if(ME.tenant&&!ME.tenant.active)toast('اشتراك الصالون منتهٍ — يمكنك العرض فقط. تواصل مع مزوّد النظام',false);
+ cache.services=ME.tenant?await sel('services','*',x=>x.eq('active',true).order('price')):[];
+ go(ME.profile?'home':'salons');refreshBadges().catch(()=>{});
+ setInterval(()=>refreshBadges().catch(()=>{}),60000)}
+function loginView(){$('#side').hidden=true;
+ app.innerHTML=`<div class="card center"><h2>تسجيل الدخول</h2><form id="lf"><label for="em">البريد الإلكتروني</label><input id="em" type="email" autocomplete="username" required>
+ <label for="pw">كلمة المرور</label><input id="pw" type="password" autocomplete="current-password" required><button class="btn big">دخول</button></form>
+ <p class="note">الحسابات يُنشئها مالك الصالون. نسيت كلمة المرور؟ اطلب من المالك إعادة تعيينها.</p></div>`;
+ $('#lf').onsubmit=async e=>{e.preventDefault();const {error}=await sb.auth.signInWithPassword({email:$('#em').value.trim(),password:$('#pw').value});if(error)return toast('البريد أو كلمة المرور غير صحيحة',false);boot()}}
 
 const V={};
-/* ===== 1 reception queue ===== */
-V.queue=async()=>{const t=await q('tickets','*,customers(full_name,phone)',x=>x.in('status',['waiting','in_service','done']).order('opened_at'));
- const today=await q('tickets','id',x=>x.gte('opened_at',new Date().toISOString().slice(0,10)));
- const bopts=cache.barbers.map(b=>`<option value="${b.user_id}">${esc(b.full_name)} · كرسي ${b.chair_no??''}</option>`).join('');
- app.innerHTML=`<div class="card"><div class="kp"><div class="k"><small>ينتظر</small><b>${t.filter(x=>x.status=='waiting').length}</b></div><div class="k"><small>على الكرسي</small><b>${t.filter(x=>x.status=='in_service').length}</b></div><div class="k"><small>بانتظار الدفع</small><b>${t.filter(x=>x.status=='done').length}</b></div><div class="k"><small>تذاكر اليوم</small><b>${today.length}</b></div></div></div>
- <div class="card"><h2>فتح تذكرة</h2><form id="of" class="row"><input id="ph" placeholder="جوال العميل 05XXXXXXXX" pattern="05[0-9]{8}" required><input id="nm" placeholder="الاسم (لعميل جديد)"><input id="bd" type="date" title="تاريخ الميلاد (اختياري)">
- <label style="flex:0 0 auto"><input id="cs" type="checkbox" style="width:auto"> يوافق على العروض</label><button class="g">فتح تذكرة</button></form>
- <p class="note">S01: لا خدمة بلا تذكرة. موافقة العروض تُحفظ بتاريخها.</p></div>
- <div class="card"><h2>الدور</h2><div class="tw"><table><tr><th>التذكرة</th><th>العميل</th><th>الحالة</th><th>منذ</th><th>الحلاق</th><th></th></tr>
- ${t.map(x=>`<tr><td>${x.ticket_no}</td><td>${esc(x.customers?.full_name)}</td><td>${pill(x.status)}</td><td>${mins(x.opened_at)} د</td>
- <td>${x.status=='waiting'?`<select id="as-${x.id}"><option value="">— اختر —</option>${bopts}</select>`:esc(cache.barbers.find(b=>b.user_id==x.barber_id)?.full_name||'—')}</td>
- <td>${x.status=='waiting'?`<button class="o" onclick="assign('${x.id}')">إسناد</button>`:''}</td></tr>`).join('')||'<tr><td colspan="6" class="note">لا أحد في الدور</td></tr>'}</table></div></div>`;
- t.filter(x=>x.status=='waiting'&&x.barber_id).forEach(x=>{const s=$('#as-'+x.id);if(s)s.value=x.barber_id});
- $('#of').onsubmit=async e=>{e.preventDefault();const r=await rpc('open_ticket',{p_phone:$('#ph').value.trim(),p_name:$('#nm').value.trim()||'عميل',p_consent:$('#cs').checked,p_birthday:$('#bd').value||null},'تم فتح التذكرة');go('queue')}};
-window.assign=async id=>{const b=$('#as-'+id).value;if(!b)return toast('اختر الحلاق',false);await rpc('assign_ticket',{p_ticket:id,p_barber:b},'تم الإسناد');go(view)};
+/* ---------- password ---------- */
+V.pw=async()=>{const forced=ME.profile?.must_change_password;
+ app.innerHTML=`<div class="card form"><h2>تغيير كلمة المرور</h2>${forced?'<p class="note">هذا أول دخول لك. اختر كلمة مرور خاصة بك لا يعرفها غيرك.</p>':''}
+ <form id="pf"><label for="p1">كلمة المرور الجديدة (8 أحرف على الأقل)</label><input id="p1" type="password" minlength="8" autocomplete="new-password" required>
+ <label for="p2">تأكيد كلمة المرور</label><input id="p2" type="password" minlength="8" autocomplete="new-password" required><button class="btn big">حفظ</button></form></div>`;
+ $('#pf').onsubmit=async e=>{e.preventDefault();if($('#p1').value!==$('#p2').value)return toast('كلمتا المرور غير متطابقتين',false);
+  const {error}=await sb.auth.updateUser({password:$('#p1').value});if(error)return toast(error.message,false);
+  if(ME.profile)await rpc('password_changed');toast('تم تغيير كلمة المرور');ME=await rpc('me');boot()}};
 
-/* bookings */
-V.bookings=async()=>{const d=new Date().toISOString().slice(0,10);
- const b=await q('bookings','*,customers(full_name,phone),services(name)',x=>x.gte('starts_at',d).order('starts_at').limit(100));
- app.innerHTML=`<div class="card"><h2>الحجوزات القادمة</h2><div class="tw"><table><tr><th>الوقت</th><th>العميل</th><th>الخدمة</th><th>الحلاق</th><th>الحالة</th><th></th></tr>
- ${b.map(x=>`<tr><td>${new Date(x.starts_at).toLocaleString('ar-SA',{weekday:'short',hour:'2-digit',minute:'2-digit'})}</td><td>${esc(x.customers?.full_name)}</td><td>${esc(x.services?.name)}</td><td>${esc(cache.barbers.find(y=>y.user_id==x.barber_id)?.full_name||'أي حلاق')}</td><td>${pill(x.status)}</td>
- <td>${x.status=='booked'?`<button class="g" onclick="checkin('${x.id}')">وصل</button> <button class="r" onclick="noshow('${x.id}')">لم يحضر</button>`:''}</td></tr>`).join('')||'<tr><td colspan="6" class="note">لا حجوزات</td></tr>'}</table></div>
- <p class="note">«وصل» يفتح تذكرة تلقائيًا ويدخل العميل الدور. «لم يحضر» متاح بعد وقت الموعد فقط.</p></div>`};
-window.checkin=async id=>{await rpc('check_in_booking',{p_booking:id},'دخل العميل الدور');go(view)};
-window.noshow=async id=>{await rpc('mark_no_show',{p_booking:id},'سُجّل عدم الحضور');go(view)};
+/* ---------- home ---------- */
+V.home=async()=>{const r=ME.profile.role;
+ if(r==='barber'){const t=today();const ops=await rpc('barber_my_ops',{p_from:t,p_to:t});const c=await rpc('my_cash');const pay=(await rpc('commission_report',{p_month:t}))[0]||{};
+  const live=ops.filter(o=>o.status!=='voided'&&o.status!=='rejected');
+  app.innerHTML=`<h2>لوحتي</h2><div class="kp"><div class="k"><small>حلاقات اليوم</small><b>${live.length}</b></div><div class="k"><small>مبيعات اليوم</small><b>${n2(live.reduce((a,o)=>a+Number(o.amount),0))}</b></div>
+  <div class="k"><small>نقدية في عهدتي</small><b>${n2(c.in_hand)}</b></div><div class="k"><small>عمولتي الشهر (المطابق)</small><b>${n2(pay.commission)}</b></div></div>`+tilesFor('عملي')+tilesFor('المالية');return}
+ const t=today();const d=await rpc('dashboard',{p_from:t,p_to:t});
+ app.innerHTML=`<h2>لوحة القيادة — اليوم</h2><div class="kp"><div class="k"><small>العمليات</small><b>${d.count}</b></div><div class="k"><small>الإجمالي</small><b>${n2(d.amount)}</b></div>
+ <div class="k"><small>كاش</small><b>${n2(d.cash)}</b></div><div class="k"><small>شبكة</small><b>${n2(d.card)}</b></div><div class="k"><small>تحويل</small><b>${n2(d.transfer)}</b></div>
+ <div class="k"><small>نقدية لدى الحلاقين</small><b style="color:var(--wt)">${n2(d.cash_in_hands)}</b></div><div class="k"><small>بانتظار المطابقة</small><b>${d.pending}</b></div><div class="k"><small>بلاغات اليوم</small><b style="color:var(--bad)">${d.incidents}</b></div></div>
+ <div class="card"><h3 style="margin-top:0">الحلاقون اليوم</h3><div class="tw"><table><tr><th>الحلاق</th><th>الكرسي</th><th>العمليات</th><th>المبلغ</th><th>نقدية في عهدته</th><th>بانتظار</th></tr>
+ ${d.by_barber.map(b=>`<tr><td>${esc(b.name)}</td><td>${b.chair??'—'}</td><td>${b.count}</td><td>${n2(b.amount)}</td><td>${Number(b.cash_in_hand)?`<span class="pill pending">${n2(b.cash_in_hand)}</span>`:'0.00'}</td><td>${b.pending||''}</td></tr>`).join('')||'<tr><td colspan="6" class="note">لا حلاقين بعد — أضفهم من «الموظفون»</td></tr>'}</table></div></div>`+
+ menu().filter(x=>x[0]!=='الرئيسية').map(x=>tilesFor(x[0])).join('')};
 
-/* ===== 3 cashier ===== */
-V.cashier=async()=>{const t=await q('tickets','*,customers(id,full_name),ticket_items(*,services(name),products(name)),discount_requests(*)',x=>x.eq('status','done').order('finished_at'));
- app.innerHTML=`<div class="card"><h2>بانتظار الدفع (${t.length})</h2><p class="note">S02 لا إغلاق بلا فاتورة · S03 الحلاق لا يقبض · S04 الخصم بموافقة المشرف · الأسعار شاملة الضريبة</p></div>`+
- (await Promise.all(t.map(async x=>{const gross=x.ticket_items.reduce((a,i)=>a+Number(i.line_total),0);
-  const disc=x.discount_requests.filter(d=>d.status=='approved').reduce((a,d)=>a+Number(d.amount),0);const pend=x.discount_requests.some(d=>d.status=='pending');
-  const pk=await q('customer_packages','*,packages(name,service_id)',y=>y.eq('customer_id',x.customer_id).gte('expires_on',new Date().toISOString().slice(0,10)));
-  const okPk=pk.filter(p=>p.sessions_used<p.sessions_total&&x.ticket_items.some(i=>i.service_id==p.packages.service_id));
-  const tot=gross-disc, sub=Math.round(tot/1.15*100)/100;
-  return `<div class="card"><h2>${x.ticket_no} · ${esc(x.customers.full_name)} <span class="note">الحلاق: ${esc(cache.barbers.find(b=>b.user_id==x.barber_id)?.full_name)}</span></h2>
-  <div class="tw"><table>${x.ticket_items.map(i=>`<tr><td>${esc(i.services?.name||i.products?.name)}${i.qty>1?' ×'+i.qty:''}</td><td>${n2(i.line_total)}</td></tr>`).join('')}
-  ${disc?`<tr><td>خصم معتمد</td><td>-${n2(disc)}</td></tr>`:''}<tr><td>قبل الضريبة</td><td>${n2(sub)}</td></tr><tr><td>ضريبة 15%</td><td>${n2(tot-sub)}</td></tr><tr><th>الإجمالي</th><th>${n2(tot)}</th></tr></table></div>
-  ${pend?'<p class="pill pending">طلب خصم معلّق عند المشرف</p>':''}
-  <div class="row" style="margin-top:8px"><input id="ca-${x.id}" type="number" step="0.01" placeholder="نقد"><input id="cd-${x.id}" type="number" step="0.01" placeholder="مدى/جيديا"><input id="tr-${x.id}" type="number" step="0.01" placeholder="تحويل">
-  ${okPk.length?`<select id="pk-${x.id}"><option value="">بدون باقة</option>${okPk.map(p=>`<option value="${p.id}">${esc(p.packages.name)} (${p.sessions_used}/${p.sessions_total})</option>`).join('')}</select>`:''}</div>
-  <div class="row" style="margin-top:8px"><button class="g" onclick="pay('${x.id}',${tot})">إصدار الفاتورة والقبض</button><button class="o" onclick="fill('${x.id}',${tot})">الكل نقد</button>
-  <input id="dsa-${x.id}" type="number" placeholder="مبلغ الخصم"><input id="dsr-${x.id}" placeholder="سبب الخصم"><button class="r" onclick="disc('${x.id}')">طلب خصم ← المشرف</button></div></div>`}))).join('')};
-window.fill=(id,t)=>{$('#ca-'+id).value=t.toFixed(2)};
-window.pay=async(id)=>{const p=[['cash','ca'],['card','cd'],['transfer','tr']].map(([m,k])=>({method:m,amount:Number($(`#${k}-${id}`).value||0)})).filter(x=>x.amount>0);
- const pk=$('#pk-'+id)?.value||null;const inv=await rpc('pay_ticket',{p_ticket:id,p_payments:p,p_package:pk});toast(`صدرت ${inv.invoice_no} · ${n2(inv.total)}`);go(view)};
-window.disc=async id=>{await rpc('request_discount',{p_ticket:id,p_amount:Number($('#dsa-'+id).value),p_reason:$('#dsr-'+id).value},'أُرسل الطلب للمشرف');go(view)};
+/* ---------- barber: record ---------- */
+let REC={};
+V.record=async()=>{REC={method:null,service:null,file:null};
+ if(!cache.services.length){app.innerHTML='<div class="card">لا توجد خدمات بعد. اطلب من المالك إضافة الخدمات والأسعار.</div>';return}
+ app.innerHTML=`<div class="card form"><h2>تسجيل حلاقة</h2><form id="rf">
+ <label for="ph">جوال العميل</label><input id="ph" inputmode="numeric" placeholder="05XXXXXXXX" pattern="05[0-9]{8}" maxlength="10" required><div id="cinfo" class="note" style="margin-top:6px"></div>
+ <div id="nmw" hidden><label for="nm">اسم العميل (عميل جديد)</label><input id="nm" autocomplete="off"></div>
+ <label>نوع الحلاقة</label><div class="chips" id="svc">${cache.services.map(s=>`<span class="chip" data-id="${s.id}" data-p="${s.price}">${esc(s.name)} · ${n2(s.price)}</span>`).join('')}</div>
+ <label>المبلغ (شامل الضريبة)</label><div class="lock" id="amt">اختر نوع الحلاقة — المبلغ من قائمة الأسعار ولا يُعدَّل</div>
+ <label>طريقة السداد</label><div class="seg" id="mt"><button type="button" data-m="cash">كاش</button><button type="button" data-m="card">شبكة</button><button type="button" data-m="transfer">تحويل</button></div>
+ <div id="mcash" hidden><div class="lock" style="margin-top:10px">💵 النقدية تُضاف إلى عهدتك، وتسلّمها للمالية أو المشرف آخر اليوم.</div></div>
+ <div id="mcard" hidden><label for="ap">رقم الموافقة (من إيصال الشبكة)</label><input id="ap" inputmode="numeric" dir="ltr" style="text-align:right" maxlength="12"></div>
+ <div id="mtr" hidden><label for="tn">اسم المحوِّل</label><input id="tn"></div>
+ <div id="mph" hidden><label id="phl">صورة الإيصال</label><label class="cam" for="fi" id="camL">📷 صوّر الإيصال<br><span class="note" id="phn">إلزامي</span></label><input type="file" id="fi" accept="image/*" capture="environment" hidden></div>
+ <button class="btn g big" id="sv">حفظ العملية</button></form>
+ <p class="note">بعد الحفظ لا تُعدَّل العملية ولا تُحذف؛ التصحيح بطلب للمشرف.</p></div>`;
+ const ph=$('#ph');ph.oninput=async()=>{const v=ph.value.replace(/\D/g,'');ph.value=v;$('#cinfo').textContent='';$('#nmw').hidden=true;
+  if(/^05\d{8}$/.test(v)){const c=await rpc('find_customer',{p_phone:v});if(c){$('#cinfo').innerHTML=`✓ <b>${esc(c.name)}</b> — عميل سابق · ${c.visits} زيارة`}else{$('#nmw').hidden=false;$('#cinfo').textContent='عميل جديد — اكتب اسمه'}}};
+ $('#svc').onclick=e=>{const c=e.target.closest('.chip');if(!c)return;$('#svc').querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');REC.service=c.dataset.id;$('#amt').innerHTML=`<b style="font-size:20px;color:var(--ink)">${n2(c.dataset.p)}</b> ر.س`};
+ $('#mt').onclick=e=>{const b=e.target.closest('button');if(!b)return;$('#mt').querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');REC.method=b.dataset.m;
+  $('#mcash').hidden=REC.method!=='cash';$('#mcard').hidden=REC.method!=='card';$('#mtr').hidden=REC.method!=='transfer';$('#mph').hidden=false;
+  $('#phn').textContent=REC.method==='cash'?'اختياري':'إلزامي';$('#phl').textContent=REC.method==='transfer'?'صورة إشعار التحويل':'صورة الإيصال'};
+ $('#fi').onchange=async e=>{const f=e.target.files[0];if(!f)return;REC.file=await shrink(f);$('#camL').innerHTML=`<img src="${URL.createObjectURL(REC.file)}" alt="الإيصال">تغيير الصورة`};
+ $('#rf').onsubmit=async e=>{e.preventDefault();if(!REC.service)return toast('اختر نوع الحلاقة',false);if(!REC.method)return toast('اختر طريقة السداد',false);
+  if(REC.method!=='cash'&&!REC.file)return toast('صورة الإيصال إلزامية للشبكة والتحويل',false);
+  const btn=$('#sv');btn.disabled=true;btn.textContent='جارٍ الحفظ…';
+  try{let path=null;if(REC.file){path=`${ME.tenant.id}/${ME.uid}/${Date.now()}.jpg`;const {error}=await sb.storage.from('receipts').upload(path,REC.file,{contentType:'image/jpeg'});if(error){toast('تعذّر رفع الصورة: '+error.message,false);throw error}}
+   const r=await rpc('record_operation',{p_phone:$('#ph').value,p_name:$('#nm').value||null,p_service:REC.service,p_method:REC.method,p_approval:$('#ap').value||null,p_transfer_name:$('#tn').value||null,p_receipt_path:path});
+   app.innerHTML=`<div class="card form"><div class="okbox">✓ حُفظت العملية ${r.op_no}</div><p>${esc(r.customer)} · ${esc(r.service)} · <b>${n2(r.amount)}</b> · ${M[r.method]}</p>
+   <p>${pill('pending')} ${r.method==='cash'?'— أُضيفت إلى عهدتك النقدية':'— تُطابق مع تقرير '+(r.method==='card'?'الشبكة':'البنك')}</p>
+   <button class="btn g big" onclick="go('record')">تسجيل حلاقة أخرى</button><button class="btn o big" onclick="go('home')">الرئيسية</button></div>`;refreshBadges()}
+  catch(_){btn.disabled=false;btn.textContent='حفظ العملية'}}};
+function shrink(file){return new Promise(res=>{const img=new Image();img.onload=()=>{const m=1400,s=Math.min(1,m/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=img.width*s;c.height=img.height*s;
+ c.getContext('2d').drawImage(img,0,0,c.width,c.height);c.toBlob(b=>res(b||file),'image/jpeg',.82)};img.onerror=()=>res(file);img.src=URL.createObjectURL(file)})}
 
-/* packages */
-V.packages=async()=>{const cp=await q('customer_packages','*,customers(full_name,phone),packages(name)',x=>x.order('sold_at',{ascending:false}).limit(100));
- app.innerHTML=`<div class="card"><h2>بيع باقة</h2><form id="pf" class="row"><input id="pph" placeholder="جوال العميل" required><select id="ppk">${cache.packages.map(p=>`<option value="${p.id}">${esc(p.name)} · ${n2(p.price)}</option>`).join('')}</select>
- <select id="ppm"><option value="cash">نقد</option><option value="card">مدى/جيديا</option><option value="transfer">تحويل</option></select><button class="g">بيع</button></form>
- <p class="note">S06: رصيد الباقة يُخصم آليًا عند الفاتورة فقط ولا يُعدَّل يدويًا. قيمة الباقة إيراد مؤجل يُعترف به مع كل جلسة.</p></div>
- <div class="card"><h2>الباقات المباعة</h2><div class="tw"><table><tr><th>العميل</th><th>الباقة</th><th>المستخدم</th><th>ينتهي</th></tr>
- ${cp.map(x=>`<tr><td>${esc(x.customers?.full_name)}</td><td>${esc(x.packages?.name)}</td><td>${x.sessions_used} / ${x.sessions_total}</td><td>${x.expires_on}</td></tr>`).join('')||'<tr><td colspan="4" class="note">لا يوجد</td></tr>'}</table></div></div>`;
- $('#pf').onsubmit=async e=>{e.preventDefault();const c=await q('customers','id',x=>x.eq('phone',$('#pph').value.trim()));if(!c.length)return toast('العميل غير مسجل — افتح له تذكرة أولًا',false);
-  await rpc('sell_package',{p_customer:c[0].id,p_package:$('#ppk').value,p_method:$('#ppm').value},'تم بيع الباقة');go('packages')}};
+/* ---------- barber: lists ---------- */
+V.myops=async()=>{const f=cache.f1||today(),t=cache.t1||today();const ops=await rpc('barber_my_ops',{p_from:f,p_to:t});
+ const live=ops.filter(o=>!['voided','rejected'].includes(o.status));
+ app.innerHTML=`<h2>عملياتي</h2><div class="card"><div class="row"><div><label for="f1">من</label><input type="date" id="f1" value="${f}"></div><div><label for="t1">إلى</label><input type="date" id="t1" value="${t}"></div><button class="btn" onclick="cache.f1=$('#f1').value;cache.t1=$('#t1').value;go('myops')">عرض</button></div></div>
+ <div class="kp"><div class="k"><small>العمليات</small><b>${live.length}</b></div><div class="k"><small>المبلغ</small><b>${n2(live.reduce((a,o)=>a+Number(o.amount),0))}</b></div><div class="k"><small>مطابقة</small><b>${ops.filter(o=>o.status==='verified').length}</b></div><div class="k"><small>مرفوضة</small><b style="color:var(--bad)">${ops.filter(o=>o.status==='rejected').length}</b></div></div>
+ <div class="card"><div class="tw"><table><tr><th>العملية</th><th>الوقت</th><th>العميل</th><th>الخدمة</th><th>المبلغ</th><th>السداد</th><th>المرجع</th><th>الحالة</th></tr>
+ ${ops.map(o=>`<tr><td>${o.op_no}</td><td>${dt(o.created_at)}</td><td>${esc(o.customer)}</td><td>${esc(o.service)}</td><td>${n2(o.amount)}</td><td>${M[o.method]}</td><td>${esc(o.approval_no||o.transfer_name||(o.in_handover?'ضمن تسليم':''))}</td><td>${pill(o.status)}${o.reason?`<div class="note">${esc(o.reason)}</div>`:''}</td></tr>`).join('')||'<tr><td colspan="8" class="note">لا عمليات في هذه الفترة</td></tr>'}</table></div></div>`};
+V.mycust=async()=>{const c=await rpc('barber_my_customers');
+ app.innerHTML=`<h2>عملائي (${c.length})</h2><div class="card"><p class="note">العميل ملك الصالون · الرقم مخفي جزئيًا</p><div class="tw"><table><tr><th>العميل</th><th>الجوال</th><th>الزيارات</th><th>المجموع</th><th>آخر زيارة</th><th>آخر خدمة</th></tr>
+ ${c.map(x=>`<tr><td>${esc(x.full_name)}</td><td dir="ltr" style="text-align:right">${x.phone_masked}</td><td>${x.visits}</td><td>${n2(x.spent)}</td><td>${dt(x.last_visit)}</td><td>${esc(x.last_service)}</td></tr>`).join('')||'<tr><td colspan="6" class="note">لا عملاء بعد — سجّل أول حلاقة</td></tr>'}</table></div></div>`};
+V.mycash=async()=>{const c=await rpc('my_cash');
+ app.innerHTML=`<h2>عهدتي النقدية</h2><div class="kp"><div class="k"><small>نقدية في يدي الآن</small><b>${n2(c.in_hand)}</b></div><div class="k"><small>عدد العمليات</small><b>${c.count}</b></div></div>
+ ${c.pending?`<div class="card"><h3 style="margin-top:0">تسليم بانتظار الاستلام</h3><p>${c.pending.ho_no} · <b>${n2(c.pending.expected)}</b> ر.س · منذ ${dt(c.pending.requested_at)}</p><p class="note">سلّم المبلغ للمالية أو المشرف، وهو يعدّه ويؤكد الاستلام.</p></div>`:''}
+ <div class="card form"><button class="btn g big" id="ho" ${!Number(c.in_hand)||c.pending?'disabled':''}>تسليم النقدية (${n2(c.in_hand)})</button>
+ <p class="note">${c.pending?'لديك تسليم سابق لم يُستلم بعد.':'يجمع كل النقدية غير المسلّمة في تسليم واحد.'}</p></div>
+ ${c.last?`<div class="card"><h3 style="margin-top:0">آخر تسليم مستلم</h3><p>${c.last.ho_no} · متوقع ${n2(c.last.expected)} · معدود ${n2(c.last.counted)} · ${Number(c.last.variance)?`<span class="pill rejected">فرق ${n2(c.last.variance)}</span>`:'<span class="pill verified">بلا فرق</span>'}</p></div>`:''}`;
+ const b=$('#ho');if(b)b.onclick=async()=>{b.disabled=true;try{const r=await rpc('request_handover');toast(`أُنشئ التسليم ${r.ho_no} بمبلغ ${n2(r.expected)}`);go('mycash');refreshBadges()}catch(_){b.disabled=false}}};
+V.mypay=async()=>{const m=cache.m1||today().slice(0,7);const r=(await rpc('commission_report',{p_month:m+'-01'}))[0]||{};
+ app.innerHTML=`<h2>عمولتي</h2><div class="card"><div class="row"><div><label for="m1">الشهر</label><input type="month" id="m1" value="${m}"></div><button class="btn" onclick="cache.m1=$('#m1').value;go('mypay')">عرض</button></div></div>
+ <div class="kp"><div class="k"><small>عمليات مطابقة</small><b>${r.ops||0}</b></div><div class="k"><small>المطابق (شامل)</small><b>${n2(r.verified_amount)}</b></div><div class="k"><small>العمولة ${r.service_pct||0}%</small><b>${n2(r.commission)}</b></div><div class="k"><small>بانتظار المطابقة</small><b style="color:var(--wt)">${n2(r.pending_amount)}</b></div></div>
+ <p class="note">العمولة على العمليات المطابقة فقط، من المبلغ قبل الضريبة. المبالغ بانتظار المطابقة تدخل بعد مطابقتها.</p>`};
 
-/* ===== 2 barber chair + 12 receipt photo ===== */
-V.chair=async()=>{const t=await rpc('barber_my_tickets');const cur=t.find(x=>x.status=='in_service');const wait=t.filter(x=>x.status=='waiting');
- const doneT=t.filter(x=>x.status=='done'||x.status=='paid');const ph=await q('receipt_photos','ticket_id,match_status',x=>x.eq('taken_by',me.user_id));
- app.innerHTML=`<div class="grid"><div class="card"><h2>الخدمة الجارية</h2>${cur?`<h3>${cur.ticket_no} · ${esc(cur.customer)}</h3>
- <p class="note">بدأ ${tm(cur.started_at)} · ${mins(cur.started_at)} دقيقة${cur.usual?' · المعتاد: '+esc(cur.usual):''}</p>
- <p>${cur.items.map(i=>esc(i.name)+(i.qty>1?' ×'+i.qty:'')).join(' + ')||'<span class="note">لم تُضف خدمات بعد</span>'}</p>
- <div class="row"><select id="sv">${cache.services.map(s=>`<option value="${s.id}">${esc(s.name)} · ${n2(s.price)}</option>`).join('')}</select><button class="o" onclick="addI('service','${cur.id}')">+ خدمة</button></div>
- <div class="row" style="margin-top:6px"><select id="pr">${cache.products.map(s=>`<option value="${s.id}">${esc(s.name)} · ${n2(s.price)}</option>`).join('')}</select><button class="o" onclick="addI('product','${cur.id}')">+ منتج</button></div>
- <button class="g" style="width:100%;margin-top:10px" onclick="finish('${cur.id}')">انتهيت ✓</button>`:'<p class="note">لا توجد خدمة جارية</p>'}
- <div class="lock" style="margin-top:10px">لا يقبض الحلاق أي مبلغ (S03)</div></div>
- <div class="card"><h2>دوري (${wait.length})</h2>${wait.map(x=>`<div class="row" style="margin-bottom:6px"><span>${x.ticket_no} · ${esc(x.customer)}${x.usual?` <span class="note">(${esc(x.usual)})</span>`:''}</span><button onclick="startS('${x.id}')" ${cur?'disabled':''}>ابدأ</button></div>`).join('')||'<p class="note">لا أحد في دورك</p>'}</div></div>
- <div class="card"><h2>إيصالات عملاء اليوم</h2><p class="note">صوّر الإيصال الذي سلّمه الكاشير للعميل. الخادم يطابق رقم الفاتورة والمبلغ، وأي اختلاف يفتح بلاغًا رقابيًا على الكاشير.</p>
- ${doneT.map(x=>{const p=ph.filter(y=>y.ticket_id==x.id);return `<div class="card" style="margin-top:8px"><b>${x.ticket_no} · ${esc(x.customer)}</b> ${pill(x.status)}
- ${x.invoice_no?`<p>فاتورة ${x.invoice_no} · ${n2(x.invoice_total)} ر.س</p>`:'<p class="note">بانتظار الدفع…</p>'}
- ${p.length?`<p>الصور: ${p.map(y=>pill(y.match_status)).join(' ')}</p>`:''}
- <div class="row"><input type="file" accept="image/*" capture="environment" id="f-${x.id}"><input id="in-${x.id}" placeholder="رقم الفاتورة في الإيصال INV-"><input id="am-${x.id}" type="number" step="0.01" placeholder="المبلغ في الإيصال"><button onclick="photo('${x.id}')">📷 رفع</button></div></div>`}).join('')||'<p class="note">لا يوجد</p>'}</div>`};
-window.startS=async id=>{await rpc('start_service',{p_ticket:id},'بدأت الخدمة');go(view)};
-window.addI=async(k,id)=>{await rpc('add_item',{p_ticket:id,p_kind:k,p_ref:$(k=='service'?'#sv':'#pr').value,p_qty:1},'أُضيف');go(view)};
-window.finish=async id=>{await rpc('finish_service',{p_ticket:id},'حُوّلت للكاشير');go(view)};
-window.photo=async id=>{const f=$('#f-'+id).files[0];if(!f)return toast('صوّر الإيصال أولًا',false);
- const path=`${me.user_id}/${id}-${Date.now()}.${(f.name.split('.').pop()||'jpg').toLowerCase()}`;
- const {error}=await sb.storage.from('receipts').upload(path,f);if(error)return toast(error.message,false);
- const r=await rpc('log_receipt_photo',{p_ticket:id,p_path:path,p_invoice_no:$('#in-'+id).value,p_amount:Number($('#am-'+id).value||0)});
- toast(r=='matched'?'مطابق ✓':'غير مطابق — فُتح بلاغ للمشرف',r=='matched');go(view)};
+/* ---------- staff: ops review ---------- */
+V.ops=async()=>{const f=cache.f2||today(),t=cache.t2||today(),st=cache.st2??'pending',mt=cache.mt2||'';
+ const staff=await sel('profiles','user_id,full_name');const nm=Object.fromEntries(staff.map(s=>[s.user_id,s.full_name]));
+ const ops=await sel('operations','*,customers(full_name,phone)',x=>{x=x.gte('created_at',f+'T00:00:00+03:00').lte('created_at',t+'T23:59:59+03:00').order('created_at',{ascending:false});if(st)x=x.eq('status',st);if(mt)x=x.eq('method',mt);return x});
+ const r=ME.profile.role;
+ app.innerHTML=`<h2>عمليات الحلاقين</h2><div class="card"><div class="row"><div><label for="f2">من</label><input type="date" id="f2" value="${f}"></div><div><label for="t2">إلى</label><input type="date" id="t2" value="${t}"></div>
+ <div><label for="st2">الحالة</label><select id="st2"><option value="">الكل</option>${['pending','verified','rejected','voided'].map(s=>`<option value="${s}" ${s===st?'selected':''}>${ST[s]}</option>`).join('')}</select></div>
+ <div><label for="mt2">السداد</label><select id="mt2"><option value="">الكل</option>${Object.entries(M).map(([k,v])=>`<option value="${k}" ${k===mt?'selected':''}>${v}</option>`).join('')}</select></div>
+ <button class="btn" onclick="cache.f2=$('#f2').value;cache.t2=$('#t2').value;cache.st2=$('#st2').value;cache.mt2=$('#mt2').value;go('ops')">عرض</button></div>
+ <p class="note">الشبكة والتحويل: طابق مع الصورة وتقرير الجهاز أو كشف البنك. الكاش: يُطابق تلقائيًا عند استلام عهدة الحلاق.</p></div>
+ <div class="card"><div class="tw"><table><tr><th>العملية</th><th>الوقت</th><th>الحلاق</th><th>العميل</th><th>الخدمة</th><th>المبلغ</th><th>السداد</th><th>المرجع</th><th>الإيصال</th><th>الحالة</th><th></th></tr>
+ ${ops.map(o=>`<tr><td>${o.op_no}</td><td>${dt(o.created_at)}</td><td>${esc(nm[o.barber_id])}</td><td>${esc(o.customers?.full_name)}</td><td>${esc(o.service_name)}</td><td>${n2(o.amount)}</td><td>${M[o.method]}</td>
+  <td dir="auto">${esc(o.approval_no||o.transfer_name||(o.handover_id?'ضمن عهدة':'في يد الحلاق'))}</td><td>${o.receipt_path?`<button class="btn o" style="padding:4px 10px" onclick="showPhoto('${o.receipt_path}')">📷</button>`:'—'}</td>
+  <td>${pill(o.status)}${o.reason?`<div class="note">${esc(o.reason)}</div>`:''}</td>
+  <td>${o.status==='pending'&&o.method!=='cash'?`<button class="btn g" style="padding:5px 10px" onclick="vop('${o.id}',true)">مطابق</button> <button class="btn r" style="padding:5px 10px" onclick="vop('${o.id}',false)">رفض</button>`:''}
+  ${o.status==='pending'&&!o.handover_id&&['owner','supervisor'].includes(r)?` <button class="btn o" style="padding:5px 10px" onclick="voidOp('${o.id}','${o.op_no}')">إلغاء</button>`:''}</td></tr>`).join('')||'<tr><td colspan="11" class="note">لا عمليات بهذه الشروط</td></tr>'}</table></div></div>`};
+window.showPhoto=async p=>{const {data,error}=await sb.storage.from('receipts').createSignedUrl(p,300);if(error)return toast(error.message,false);
+ modal(`<img src="${data.signedUrl}" alt="صورة الإيصال" style="width:100%;border-radius:10px"><button class="btn big" onclick="closeModal()">إغلاق</button>`)};
+window.vop=async(id,ok)=>{if(ok){await rpc('verify_operation',{p_id:id,p_ok:true});toast('تمت المطابقة');go(view);refreshBadges();return}
+ modal(`<h3 style="margin-top:0">سبب الرفض</h3><textarea id="rr" rows="3" placeholder="مثال: رقم الموافقة غير موجود في تقرير الجهاز"></textarea><div class="row" style="margin-top:10px"><button class="btn r" id="rok">رفض العملية</button><button class="btn o" onclick="closeModal()">تراجع</button></div>`);
+ $('#rok').onclick=async()=>{await rpc('verify_operation',{p_id:id,p_ok:false,p_reason:$('#rr').value});closeModal();toast('رُفضت وفُتح بلاغ');go(view);refreshBadges()}};
+window.voidOp=(id,no)=>{modal(`<h3 style="margin-top:0">إلغاء العملية ${no}</h3><p class="note">الإلغاء لا يحذف السجل، ويفتح بلاغًا بالسبب.</p><textarea id="vr" rows="3" placeholder="سبب الإلغاء"></textarea><div class="row" style="margin-top:10px"><button class="btn r" id="vok">إلغاء العملية</button><button class="btn o" onclick="closeModal()">تراجع</button></div>`);
+ $('#vok').onclick=async()=>{await rpc('void_operation',{p_id:id,p_reason:$('#vr').value});closeModal();toast('أُلغيت العملية');go(view)}};
+function modal(h){const m=document.createElement('div');m.className='modal';m.id='mdl';m.innerHTML=`<div>${h}</div>`;m.onclick=e=>{if(e.target===m)closeModal()};document.body.appendChild(m)}
+window.closeModal=()=>$('#mdl')?.remove();
 
-/* 4 barber clients */
-V.myclients=async()=>{const c=await rpc('barber_my_customers');
- app.innerHTML=`<div class="card"><h2>عملائي (${c.length})</h2><p class="note">العميل ملك الصالون · الرقم مخفي من الخادم · الإرسال من المنظومة لا من جوالك</p>
- <div class="tw"><table><tr><th>العميل</th><th>الجوال</th><th>زيارات</th><th>آخر زيارة</th><th></th></tr>
- ${c.map(x=>{const d=Math.round((Date.now()-new Date(x.last_visit))/864e5);return `<tr><td>${esc(x.full_name)}${x.birthday_soon?' 🎂':''}</td><td dir="ltr">${x.phone_masked}</td><td>${x.visits}</td><td>${d<=0?'اليوم':d+' يوم'}${d>=30?' <span class="pill waiting">غائب</span>':''}</td><td>${x.consent?'':'<span class="pill cancelled">لا يوافق على العروض</span>'}</td></tr>`}).join('')||'<tr><td colspan="5" class="note">لا عملاء بعد</td></tr>'}</table></div></div>
- <div class="card"><h2>طلب إرسال عرض ← المشرف</h2><form id="cf" class="grid" style="grid-template-columns:1fr"><input id="ct" placeholder="عنوان العرض" required><textarea id="cm" placeholder="نص الرسالة" required></textarea>
- <select id="cg"><option value="absent30">عملائي الغائبون 30+ يومًا</option><option value="all">كل عملائي الموافقين</option></select><button>إرسال الطلب</button></form></div>`;
- $('#cf').onsubmit=async e=>{e.preventDefault();await rpc('request_campaign',{p_title:$('#ct').value,p_message:$('#cm').value,p_segment:$('#cg').value},'أُرسل الطلب للمشرف');go('myclients')}};
-V.mypay=async()=>{const r=await rpc('commission_report',{p_month:new Date().toISOString().slice(0,10)});const x=r[0]||{};
- app.innerHTML=`<div class="card"><h2>عمولتي هذا الشهر</h2><div class="kp"><div class="k"><small>العملاء</small><b>${x.clients||0}</b></div><div class="k"><small>صافي الخدمات</small><b>${n2(x.service_net)}</b></div><div class="k"><small>صافي المنتجات</small><b>${n2(x.product_net)}</b></div><div class="k"><small>العمولة</small><b>${n2(x.commission)}</b></div></div>
- <p class="note">تُحسب من الفواتير المدفوعة قبل الضريبة وبعد الخصم. الراتب الأساسي يظهر في كشف الرواتب.</p></div>`};
+/* ---------- handovers ---------- */
+V.handovers=async()=>{const staff=await sel('profiles','user_id,full_name');const nm=Object.fromEntries(staff.map(s=>[s.user_id,s.full_name]));
+ const p=await sel('cash_handovers','*',x=>x.eq('status','pending').order('requested_at'));const done=await sel('cash_handovers','*',x=>x.eq('status','confirmed').order('confirmed_at',{ascending:false}).limit(30));
+ const d=await rpc('dashboard',{p_from:today(),p_to:today()});
+ app.innerHTML=`<h2>استلام العهد النقدية</h2><div class="kp"><div class="k"><small>تسليمات بانتظار الاستلام</small><b>${p.length}</b></div><div class="k"><small>مبالغها</small><b>${n2(p.reduce((a,h)=>a+Number(h.expected),0))}</b></div><div class="k"><small>نقدية لم تُطلب للتسليم</small><b style="color:var(--wt)">${n2(d.cash_in_hands)}</b></div></div>
+ <div class="card"><h3 style="margin-top:0">بانتظار الاستلام</h3><p class="note">عُدّ النقدية أمام الحلاق وأدخل المبلغ الفعلي. أي فرق يفتح بلاغًا تلقائيًا.</p>
+ ${p.map(h=>`<div class="row" style="border-top:1px solid var(--line);padding-top:10px;margin-top:10px"><div><b>${h.ho_no}</b> · ${esc(nm[h.barber_id])}<div class="note">متوقع <b>${n2(h.expected)}</b> · ${dt(h.requested_at)}</div></div>
+  <div><label for="cn-${h.id}">المبلغ المعدود</label><input id="cn-${h.id}" type="number" step="0.01" inputmode="decimal"></div><div><label for="nt-${h.id}">ملاحظة</label><input id="nt-${h.id}"></div><button class="btn g" onclick="conf('${h.id}')">تأكيد الاستلام</button></div>`).join('')||'<p class="note">لا تسليمات بانتظار الاستلام</p>'}</div>
+ <div class="card"><h3 style="margin-top:0">آخر الاستلامات</h3><div class="tw"><table><tr><th>التسليم</th><th>الحلاق</th><th>متوقع</th><th>معدود</th><th>الفرق</th><th>استلمه</th><th>الوقت</th></tr>
+ ${done.map(h=>`<tr><td>${h.ho_no}</td><td>${esc(nm[h.barber_id])}</td><td>${n2(h.expected)}</td><td>${n2(h.counted)}</td><td>${Number(h.variance)?`<span class="pill rejected">${n2(h.variance)}</span>`:'<span class="pill verified">0.00</span>'}</td><td>${esc(nm[h.confirmed_by])}</td><td>${dt(h.confirmed_at)}</td></tr>`).join('')||'<tr><td colspan="7" class="note">لا يوجد</td></tr>'}</table></div></div>`};
+window.conf=async id=>{const v=$('#cn-'+id).value;if(v==='')return toast('أدخل المبلغ المعدود',false);const r=await rpc('confirm_handover',{p_id:id,p_counted:Number(v),p_note:$('#nt-'+id).value||null});
+ toast(Number(r.variance)?`استُلم مع فرق ${n2(r.variance)} — فُتح بلاغ`:'استُلم بلا فروق',!Number(r.variance));go('handovers');refreshBadges()};
 
-/* 6 supervisor board */
-V.board=async()=>{const d=new Date().toISOString().slice(0,10);
- const t=await q('tickets','*,customers(full_name),invoices(total)',x=>x.gte('opened_at',d));
- const live=await q('tickets','*,customers(full_name)',x=>x.in('status',['waiting','in_service','done']));
- const bk=await q('bookings','status',x=>x.gte('starts_at',d).lt('starts_at',d+'T23:59:59'));
- const inc=await q('incidents','*',x=>x.eq('status','open').order('created_at',{ascending:false}).limit(10));
- const sales=t.reduce((a,x)=>a+Number(x.invoices?.[0]?.total||x.invoices?.total||0),0);
- const longOpen=live.filter(x=>x.status!='waiting'&&mins(x.started_at||x.opened_at)>60);
- app.innerHTML=`<div class="card"><div class="kp"><div class="k"><small>عملاء اليوم</small><b>${t.filter(x=>x.status=='paid').length}</b></div><div class="k"><small>المبيعات</small><b>${n2(sales)}</b></div>
- <div class="k"><small>ينتظرون</small><b>${live.filter(x=>x.status=='waiting').length}</b></div><div class="k"><small>إلغاء</small><b>${t.filter(x=>x.status=='cancelled').length}</b></div><div class="k"><small>لم يحضر</small><b>${bk.filter(x=>x.status=='no_show').length}</b></div></div></div>
- <div class="card"><h2>الكراسي</h2><div class="tw"><table><tr><th>الكرسي</th><th>الحلاق</th><th>الحالة</th><th></th></tr>
- ${cache.barbers.map(b=>{const c=live.find(x=>x.barber_id==b.user_id&&x.status=='in_service');const w=live.filter(x=>x.barber_id==b.user_id&&x.status=='waiting').length;
-  return `<tr><td>${b.chair_no??''}</td><td>${esc(b.full_name)}</td><td>${c?`${c.ticket_no} · ${esc(c.customers.full_name)} · ${mins(c.started_at)} د`:'<span class="pill waiting">فارغ</span>'}</td><td>${w?w+' في دوره':''}</td></tr>`}).join('')}</table></div></div>
- <div class="card"><h2>تنبيهات</h2>${longOpen.map(x=>`<div class="row"><span class="pill cancelled">⚠ تذكرة مفتوحة ${mins(x.started_at||x.opened_at)} د · ${x.ticket_no}</span><input id="cr-${x.id}" placeholder="سبب الإلغاء"><button class="r" onclick="cancelT('${x.id}')">إلغاء بسبب</button></div>`).join('')}
- ${inc.map(x=>`<p><span class="pill cancelled">${esc(x.kind)}</span> ${esc(x.ref)} — ${esc(x.details)}</p>`).join('')||(!longOpen.length?'<p class="note">لا تنبيهات</p>':'')}
- <h3>إلغاء تذكرة مفتوحة</h3>${live.map(x=>`<div class="row" style="margin-bottom:4px"><span>${x.ticket_no} · ${esc(x.customers.full_name)} ${pill(x.status)}</span><input id="cr-${x.id}" placeholder="السبب (إلزامي)"><button class="r" onclick="cancelT('${x.id}')">إلغاء</button></div>`).join('')||'<p class="note">لا يوجد</p>'}</div>`};
-window.cancelT=async id=>{await rpc('cancel_ticket',{p_ticket:id,p_reason:$('#cr-'+id).value},'أُلغيت وفُتح بلاغ');go(view)};
+/* ---------- card report matching ---------- */
+V.cardmatch=async()=>{app.innerHTML=`<h2>مطابقة الشبكة</h2><div class="card form"><p class="note">الصق من تقرير جهاز الشبكة (أو ملف CSV) سطرًا لكل عملية: رقم الموافقة ثم المبلغ. يطابق النظام آليًا، ويعرض الاستثناءات فقط.</p>
+ <label for="csvf">ملف CSV (اختياري)</label><input type="file" id="csvf" accept=".csv,.txt">
+ <label for="rep">أو الصق هنا</label><textarea id="rep" rows="8" dir="ltr" placeholder="482917,80.00&#10;551204,120.00"></textarea><button class="btn g big" id="mb">مطابقة</button></div><div id="mres"></div>`;
+ $('#csvf').onchange=async e=>{const f=e.target.files[0];if(f)$('#rep').value=await f.text()};
+ $('#mb').onclick=async()=>{const rows=[];$('#rep').value.split(/\r?\n/).forEach(l=>{const p=l.split(/[,;\t]/).map(x=>x.trim().replace(/"/g,''));const a=p.find(x=>/^[0-9A-Za-z]{4,12}$/.test(x)&&!/^\d+\.\d+$/.test(x));const m=[...p].reverse().find(x=>/^\d+(\.\d{1,2})?$/.test(x.replace(/,/g,''))&&x!==a);if(a&&m)rows.push({approval:a,amount:Number(m)})});
+  if(!rows.length)return toast('لم أجد أسطرًا صالحة — رقم الموافقة ثم المبلغ',false);
+  const r=await rpc('match_card_report',{p_rows:rows});
+  $('#mres').innerHTML=`<div class="kp"><div class="k"><small>أسطر التقرير</small><b>${rows.length}</b></div><div class="k"><small>طوبقت الآن</small><b style="color:var(--ok)">${r.matched}</b></div><div class="k"><small>مبلغ مختلف</small><b style="color:var(--bad)">${r.amount_mismatch.length}</b></div><div class="k"><small>في التقرير وليست في النظام</small><b style="color:var(--wt)">${r.not_in_system.length}</b></div><div class="k"><small>عمليات شبكة ما زالت معلّقة</small><b>${r.still_pending}</b></div></div>
+  ${r.amount_mismatch.length?`<div class="card"><h3 style="margin-top:0">مبلغ مختلف</h3><table><tr><th>العملية</th><th>الموافقة</th><th>في النظام</th><th>في التقرير</th></tr>${r.amount_mismatch.map(x=>`<tr><td>${x.op_no}</td><td>${esc(x.approval)}</td><td>${n2(x.system)}</td><td>${n2(x.report)}</td></tr>`).join('')}</table></div>`:''}
+  ${r.not_in_system.length?`<div class="card"><h3 style="margin-top:0">مبالغ دخلت الجهاز ولم يسجّلها أي حلاق</h3><p class="note">تحتاج تحقيقًا: قد تكون حلاقة لم تُسجَّل.</p><table><tr><th>الموافقة</th><th>المبلغ</th></tr>${r.not_in_system.map(x=>`<tr><td>${esc(x.approval)}</td><td>${n2(x.amount)}</td></tr>`).join('')}</table></div>`:''}`;refreshBadges()}};
 
-V.approvals=async()=>{const d=await q('discount_requests','*,tickets(ticket_no,customers(full_name))',x=>x.eq('status','pending'));
- app.innerHTML=`<div class="card"><h2>طلبات الخصم</h2><p class="note">لا تعتمد طلبًا أنشأته (فصل المهام — يفرضه الخادم)</p><div class="tw"><table><tr><th>التذكرة</th><th>العميل</th><th>المبلغ</th><th>السبب</th><th></th></tr>
- ${d.map(x=>`<tr><td>${x.tickets.ticket_no}</td><td>${esc(x.tickets.customers.full_name)}</td><td>${n2(x.amount)}</td><td>${esc(x.reason)}</td><td><button class="g" onclick="dd('${x.id}',true)">اعتماد</button> <button class="r" onclick="dd('${x.id}',false)">رفض</button></td></tr>`).join('')||'<tr><td colspan="5" class="note">لا طلبات</td></tr>'}</table></div></div>`};
-window.dd=async(id,a)=>{await rpc('decide_discount',{p_req:id,p_approve:a},a?'اعتُمد':'رُفض');go(view)};
+/* ---------- commissions / incidents ---------- */
+V.commissions=async()=>{const m=cache.m2||today().slice(0,7);const r=await rpc('commission_report',{p_month:m+'-01'});
+ app.innerHTML=`<h2>العمولات والرواتب</h2><div class="card"><div class="row"><div><label for="m2">الشهر</label><input type="month" id="m2" value="${m}"></div><button class="btn" onclick="cache.m2=$('#m2').value;go('commissions')">عرض</button></div></div>
+ <div class="card"><div class="tw"><table><tr><th>الحلاق</th><th>عمليات مطابقة</th><th>المطابق شامل</th><th>صافي قبل الضريبة</th><th>النسبة</th><th>العمولة</th><th>الراتب</th><th>الإجمالي</th><th>بانتظار المطابقة</th></tr>
+ ${r.map(x=>`<tr><td>${esc(x.barber)}</td><td>${x.ops}</td><td>${n2(x.verified_amount)}</td><td>${n2(x.net_amount)}</td><td>${x.service_pct}%</td><td>${n2(x.commission)}</td><td>${n2(x.base_salary)}</td><th>${n2(x.total_pay)}</th><td>${Number(x.pending_amount)?`<span class="pill pending">${n2(x.pending_amount)}</span>`:'—'}</td></tr>`).join('')||'<tr><td colspan="9" class="note">لا حلاقين</td></tr>'}</table></div>
+ <p class="note">العمولة على العمليات المطابقة فقط. أكمل المطابقة قبل اعتماد الرواتب.</p></div>`};
+V.incidents=async()=>{const i=await sel('incidents','*',x=>x.order('created_at',{ascending:false}).limit(200));const K={op_rejected:'عملية مرفوضة',cash_variance:'فرق عهدة نقدية',op_voided:'عملية ملغاة'};
+ app.innerHTML=`<h2>البلاغات والاستثناءات</h2><div class="card"><div class="tw"><table><tr><th>الوقت</th><th>النوع</th><th>المرجع</th><th>المبلغ</th><th>التفاصيل</th></tr>
+ ${i.map(x=>`<tr><td>${dt(x.created_at)}</td><td>${K[x.kind]||x.kind}</td><td>${esc(x.ref)}</td><td>${x.amount!=null?n2(x.amount):''}</td><td style="white-space:normal;min-width:240px">${esc(x.details)}</td></tr>`).join('')||'<tr><td colspan="5" class="note">لا بلاغات</td></tr>'}</table></div></div>`};
 
-/* 5 campaigns */
-V.campaigns=async()=>{const c=await q('campaigns','*',x=>x.order('created_at',{ascending:false}));
- app.innerHTML=`<div class="card"><h2>طلب حملة</h2><form id="cf" class="row"><input id="ct" placeholder="العنوان" required><input id="cm" placeholder="النص" required><select id="cg"><option value="absent30">غائبون 30+ يومًا</option><option value="all">كل الموافقين</option></select><button>إنشاء</button></form>
- <p class="note">الموافقون فقط · رابط إيقاف في كل رسالة · الإرسال عبر واتساب الأعمال الرسمي (يحتاج ربطًا منفصلًا)</p></div>
- <div class="card"><h2>الحملات</h2><div class="tw"><table><tr><th>العنوان</th><th>الشريحة</th><th>من</th><th>المستلمون</th><th>الحالة</th><th></th></tr>
- ${c.map(x=>`<tr><td>${esc(x.title)}</td><td>${x.segment=='absent30'?'غائبون 30+':'الكل'}</td><td>${x.barber_id?esc(cache.barbers.find(b=>b.user_id==x.barber_id)?.full_name):'الإدارة'}</td><td>${x.recipients}</td><td>${pill(x.status)}</td>
- <td>${x.status=='pending'?`<button class="g" onclick="dc('${x.id}',true)">موافقة</button> <button class="r" onclick="dc('${x.id}',false)">رفض</button>`:''}</td></tr>`).join('')||'<tr><td colspan="6" class="note">لا حملات</td></tr>'}</table></div></div>`;
- $('#cf').onsubmit=async e=>{e.preventDefault();await rpc('request_campaign',{p_title:$('#ct').value,p_message:$('#cm').value,p_segment:$('#cg').value},'أُنشئت — تحتاج موافقة شخص آخر');go('campaigns')}};
-window.dc=async(id,a)=>{const n=await rpc('decide_campaign',{p_id:id,p_approve:a});toast(a?`اعتُمدت · ${n} مستلم موافق`:'رُفضت');go(view)};
+/* ---------- owner settings ---------- */
+V.services=async()=>{const s=await sel('services','*',x=>x.order('price'));
+ app.innerHTML=`<h2>الخدمات والأسعار</h2><div class="card"><p class="note">الأسعار شاملة الضريبة. تغيير السعر لا يمس العمليات السابقة، وكل تعديل يُسجَّل.</p><div class="tw"><table><tr><th>الخدمة</th><th>السعر</th><th>المدة (د)</th><th>نشطة</th><th></th></tr>
+ ${s.map(x=>`<tr><td><input id="sn-${x.id}" value="${esc(x.name)}" aria-label="اسم الخدمة"></td><td><input id="sp-${x.id}" type="number" step="0.01" value="${x.price}" style="width:100px" aria-label="السعر"></td><td><input id="sd-${x.id}" type="number" value="${x.duration_min}" style="width:80px" aria-label="المدة"></td><td><input id="sa-${x.id}" type="checkbox" ${x.active?'checked':''} style="width:auto" aria-label="نشطة"></td><td><button class="btn o" onclick="saveS('${x.id}')">حفظ</button></td></tr>`).join('')}
+ <tr><td><input id="sn-new" placeholder="خدمة جديدة" aria-label="اسم الخدمة"></td><td><input id="sp-new" type="number" step="0.01" style="width:100px" aria-label="السعر"></td><td><input id="sd-new" type="number" value="30" style="width:80px" aria-label="المدة"></td><td><input id="sa-new" type="checkbox" checked style="width:auto" aria-label="نشطة"></td><td><button class="btn g" onclick="saveS('new')">إضافة</button></td></tr></table></div></div>`};
+window.saveS=async id=>{await rpc('set_service',{p_id:id==='new'?null:id,p_name:$('#sn-'+id).value,p_price:Number($('#sp-'+id).value),p_duration:Number($('#sd-'+id).value),p_active:$('#sa-'+id).checked});
+ toast('حُفظ');cache.services=await sel('services','*',x=>x.eq('active',true).order('price'));go('services')};
+V.staff=async()=>{const st=await rpc('list_staff');const br=await sel('branches','*',x=>x.order('name'));const bo=v=>br.map(b=>`<option value="${b.id}" ${b.id===v?'selected':''}>${esc(b.name)}</option>`).join('');
+ const ro=v=>Object.entries(R).map(([k,l])=>`<option value="${k}" ${k===v?'selected':''}>${l}</option>`).join('');
+ app.innerHTML=`<h2>الموظفون</h2><div class="card"><h3 style="margin-top:0">إضافة موظف</h3><form id="nf"><div class="row">
+ <div><label for="nn">الاسم</label><input id="nn" required></div><div><label for="ne">البريد (للدخول)</label><input id="ne" type="email" required></div><div><label for="np">كلمة مرور مؤقتة</label><input id="np" minlength="8" required></div></div>
+ <div class="row"><div><label for="nr">الدور</label><select id="nr">${ro('barber')}</select></div><div><label for="nb">الفرع</label><select id="nb">${bo()}</select></div><div><label for="nc">رقم الكرسي</label><input id="nc" type="number"></div><button class="btn g">إضافة</button></div></form>
+ <p class="note">سلّم الموظف بريده وكلمة المرور المؤقتة؛ يُطلب منه تغييرها عند أول دخول.</p></div>
+ <div class="card"><div class="tw"><table><tr><th>الاسم</th><th>البريد</th><th>الدور</th><th>الفرع</th><th>الكرسي</th><th>الراتب</th><th>العمولة %</th><th>نشط</th><th></th></tr>
+ ${st.map(x=>`<tr><td>${esc(x.full_name)}</td><td dir="ltr" style="text-align:right">${esc(x.email)}</td><td><select id="r-${x.user_id}">${ro(x.role)}</select></td><td><select id="b-${x.user_id}">${bo(x.branch_id)}</select></td>
+  <td><input id="c-${x.user_id}" type="number" value="${x.chair_no??''}" style="width:70px" aria-label="الكرسي"></td>
+  <td>${x.role==='barber'?`<input id="s-${x.user_id}" type="number" value="${x.base_salary??0}" style="width:100px" aria-label="الراتب">`:'—'}</td><td>${x.role==='barber'?`<input id="p-${x.user_id}" type="number" value="${x.service_pct??0}" style="width:70px" aria-label="النسبة">`:'—'}</td>
+  <td><input id="a-${x.user_id}" type="checkbox" ${x.active?'checked':''} style="width:auto" aria-label="نشط"></td>
+  <td><button class="btn o" onclick="saveSt('${x.user_id}',${x.role==='barber'})">حفظ</button> <button class="btn o" onclick="resetPw('${x.user_id}','${esc(x.full_name)}')">🔑</button></td></tr>`).join('')}</table></div>
+ <p class="note">لا يُحذف موظف؛ يُوقف فقط ويبقى سجلّه. لا يُوقف حلاق لديه نقدية لم تُستلم.</p></div>`;
+ $('#nf').onsubmit=async e=>{e.preventDefault();await rpc('create_staff',{p_email:$('#ne').value,p_password:$('#np').value,p_name:$('#nn').value,p_role:$('#nr').value,p_branch:$('#nb').value||null,p_chair:$('#nc').value?Number($('#nc').value):null});toast('أُضيف الموظف');go('staff')}};
+window.saveSt=async(u,isB)=>{await rpc('set_staff',{p_user:u,p_role:$('#r-'+u).value,p_branch:$('#b-'+u).value,p_chair:$('#c-'+u).value?Number($('#c-'+u).value):null,p_active:$('#a-'+u).checked});
+ if(isB&&$('#s-'+u))await rpc('set_barber_pay',{p_user:u,p_salary:Number($('#s-'+u).value),p_pct:Number($('#p-'+u).value)});toast('حُفظ');go('staff')};
+window.resetPw=(u,n)=>{modal(`<h3 style="margin-top:0">كلمة مرور مؤقتة لـ ${n}</h3><input id="rp" minlength="8" placeholder="8 أحرف على الأقل"><div class="row" style="margin-top:10px"><button class="btn" id="rpo">تعيين</button><button class="btn o" onclick="closeModal()">تراجع</button></div>`);
+ $('#rpo').onclick=async()=>{await rpc('reset_staff_password',{p_user:u,p_password:$('#rp').value});closeModal();toast('عُيّنت — سيُطلب منه تغييرها عند الدخول')}};
+V.salon=async()=>{ME=await rpc('me');const t=ME.tenant;const br=await sel('branches','*',x=>x.order('name'));
+ app.innerHTML=`<h2>بيانات الصالون</h2><div class="card form"><form id="sf"><label for="tn1">اسم الصالون</label><input id="tn1" value="${esc(t.name)}" required>
+ <label><input id="tvr" type="checkbox" ${t.vat_registered?'checked':''} style="width:auto"> مسجّل في ضريبة القيمة المضافة (الأسعار شاملة 15%)</label>
+ <label for="tvn">الرقم الضريبي</label><input id="tvn" value="${esc(t.vat_no||'')}" dir="ltr" maxlength="15"><label for="tcr">السجل التجاري</label><input id="tcr" value="${esc(t.cr_no||'')}" dir="ltr">
+ <label for="tph">الجوال</label><input id="tph" value="${esc(t.phone||'')}" dir="ltr"><label for="tci">المدينة</label><input id="tci" value="${esc(t.city||'')}"><button class="btn g big">حفظ</button></form></div>
+ <div class="card form"><h3 style="margin-top:0">الفروع</h3>${br.map(b=>`<div class="row" style="margin-bottom:8px"><input id="br-${b.id}" value="${esc(b.name)}" aria-label="اسم الفرع"><button class="btn o" onclick="saveBr('${b.id}')">حفظ</button></div>`).join('')}
+ <div class="row"><input id="br-new" placeholder="فرع جديد" aria-label="فرع جديد"><button class="btn g" onclick="saveBr('new')">إضافة</button></div></div>
+ <div class="card form"><h3 style="margin-top:0">الاشتراك</h3><p>الخطة: <b>${({trial:'تجربة',monthly:'شهري',yearly:'سنوي'})[t.plan]}</b> · ينتهي: <b>${t.paid_until||'—'}</b></p></div>`;
+ $('#sf').onsubmit=async e=>{e.preventDefault();await rpc('update_salon',{p_name:$('#tn1').value,p_vat_no:$('#tvn').value,p_cr_no:$('#tcr').value,p_phone:$('#tph').value,p_city:$('#tci').value,p_vat_registered:$('#tvr').checked});toast('حُفظت بيانات الصالون');ME=await rpc('me');$('#sname').textContent=ME.tenant.name}};
+window.saveBr=async id=>{await rpc('set_branch',{p_id:id==='new'?null:id,p_name:$('#br-'+id).value});toast('حُفظ');go('salon')};
 
-/* 7 daily close */
-V.close=async()=>{const br=await q('branches');const cl=await q('daily_closes','*',x=>x.order('close_date',{ascending:false}).limit(30));
- app.innerHTML=`<div class="card"><h2>الإقفال اليومي — مطابقة ثلاثية</h2><form id="xf" class="row"><select id="xb">${br.map(b=>`<option value="${b.id}">${esc(b.name)}</option>`).join('')}</select>
- <input id="xd" type="date" value="${new Date().toISOString().slice(0,10)}" required><input id="xc" type="number" step="0.01" placeholder="النقد المعدود فعليًا" required><button class="g">إقفال اليوم</button></form>
- <p class="note">يُرفض الإقفال إذا بقيت تذكرة مفتوحة. بعد الإقفال لا تعديل على اليوم. أي فرق نقدي يفتح بلاغًا.</p></div>
- <div class="card"><h2>سجل الإقفالات</h2><div class="tw"><table><tr><th>اليوم</th><th>تذاكر</th><th>فواتير</th><th>مدفوعات</th><th>نقد متوقع</th><th>معدود</th><th>الفرق</th><th>مدى/تحويل</th><th>بلا صورة</th><th>صور مختلفة</th></tr>
- ${cl.map(x=>{const tri=x.tickets_count==x.invoices_count&&x.invoices_count==x.payments_invoices;return `<tr><td>${x.close_date}</td><td>${x.tickets_count}</td><td>${x.invoices_count}</td><td>${x.payments_invoices} ${tri?'<span class="pill paid">✓</span>':'<span class="pill cancelled">✗</span>'}</td><td>${n2(x.cash_expected)}</td><td>${n2(x.cash_counted)}</td>
- <td>${Number(x.cash_variance)==0?'<span class="pill paid">0</span>':`<span class="pill cancelled">${n2(x.cash_variance)}</span>`}</td><td>${n2(x.card_expected)}</td><td>${x.photos_missing}</td><td>${x.photos_mismatch?`<span class="pill cancelled">${x.photos_mismatch}</span>`:0}</td></tr>`}).join('')||'<tr><td colspan="10" class="note">لا إقفالات</td></tr>'}</table></div>
- <p class="note">مدى/جيديا تُطابق لاحقًا مع كشف المزوّد والبنك (مبالغ في الطريق).</p></div>`;
- $('#xf').onsubmit=async e=>{e.preventDefault();const r=await rpc('close_day',{p_branch:$('#xb').value,p_date:$('#xd').value,p_cash_counted:Number($('#xc').value)});toast(Number(r.cash_variance)?`أُقفل مع فرق ${n2(r.cash_variance)} — فُتح بلاغ`:'أُقفل بلا فروق',!Number(r.cash_variance));go('close')}};
+/* ---------- platform ---------- */
+V.salons=async()=>{const s=await rpc('platform_list');const td=today();
+ const soon=s.filter(x=>x.active&&x.paid_until&&x.paid_until>=td&&(new Date(x.paid_until)-new Date(td))/864e5<=7).length;
+ app.innerHTML=`<h2>لوحة المزوّد</h2><div class="kp"><div class="k"><small>كل الصالونات</small><b>${s.length}</b></div><div class="k"><small>نشطة</small><b style="color:var(--ok)">${s.filter(x=>x.active&&(!x.paid_until||x.paid_until>=td)).length}</b></div><div class="k"><small>تنتهي خلال 7 أيام</small><b style="color:var(--wt)">${soon}</b></div><div class="k"><small>موقوفة/منتهية</small><b style="color:var(--bad)">${s.filter(x=>!x.active||(x.paid_until&&x.paid_until<td)).length}</b></div></div>
+ <div class="card"><h3 style="margin-top:0">إضافة صالون</h3><form id="cf"><div class="row"><div><label for="c1">اسم الصالون</label><input id="c1" required></div><div><label for="c2">الرابط المختصر (إنجليزي)</label><input id="c2" dir="ltr" pattern="[a-z0-9-]{3,40}" placeholder="alnukhba" required></div></div>
+ <div class="row"><div><label for="c3">اسم المالك</label><input id="c3" required></div><div><label for="c4">بريد المالك</label><input id="c4" type="email" required></div><div><label for="c5">كلمة مرور مؤقتة</label><input id="c5" minlength="8" required></div></div>
+ <div class="row"><div><label for="c6">الخطة</label><select id="c6"><option value="trial">تجربة</option><option value="monthly">شهري</option><option value="yearly">سنوي</option></select></div><div><label for="c7">ينتهي في (فارغ = 14 يومًا)</label><input id="c7" type="date"></div><button class="btn g">إنشاء الصالون</button></div></form>
+ <p class="note">يُنشأ الصالون بفرع رئيسي وقائمة خدمات مقترحة يعدّلها المالك. أنت ترى أرقام الاستخدام فقط، لا بيانات العملاء ولا المبالغ.</p></div>
+ <div class="card"><div class="tw"><table><tr><th>الصالون</th><th>المالك</th><th>الخطة</th><th>ينتهي</th><th>نشط</th><th>الموظفون</th><th>عمليات 30 يومًا</th><th>آخر عملية</th><th></th></tr>
+ ${s.map(x=>`<tr><td>${esc(x.name)}<div class="note" dir="ltr">${x.slug}</div></td><td dir="ltr" style="text-align:right">${esc(x.owner_email)}</td>
+  <td><select id="pl-${x.id}"><option value="trial" ${x.plan==='trial'?'selected':''}>تجربة</option><option value="monthly" ${x.plan==='monthly'?'selected':''}>شهري</option><option value="yearly" ${x.plan==='yearly'?'selected':''}>سنوي</option></select></td>
+  <td><input id="pu-${x.id}" type="date" value="${x.paid_until||''}" style="width:150px" aria-label="ينتهي"></td><td><input id="pa-${x.id}" type="checkbox" ${x.active?'checked':''} style="width:auto" aria-label="نشط"></td>
+  <td>${x.staff}</td><td>${x.ops_30d}</td><td>${x.last_op?dt(x.last_op):'—'}</td><td><button class="btn o" onclick="saveSalon('${x.id}')">حفظ</button></td></tr>`).join('')||'<tr><td colspan="9" class="note">لا صالونات بعد</td></tr>'}</table></div></div>`;
+ $('#cf').onsubmit=async e=>{e.preventDefault();const r=await rpc('platform_create_salon',{p_name:$('#c1').value,p_slug:$('#c2').value.toLowerCase(),p_owner_name:$('#c3').value,p_owner_email:$('#c4').value,p_owner_password:$('#c5').value,p_plan:$('#c6').value,p_paid_until:$('#c7').value||null});
+  toast('أُنشئ الصالون '+r+' — سلّم المالك بريده وكلمة المرور المؤقتة');go('salons')}};
+window.saveSalon=async id=>{await rpc('platform_set_salon',{p_id:id,p_active:$('#pa-'+id).checked,p_plan:$('#pl-'+id).value,p_paid_until:$('#pu-'+id).value||null});toast('حُفظ');go('salons')};
 
-V.commissions=async()=>{const m=cache.month||new Date().toISOString().slice(0,7);const r=await rpc('commission_report',{p_month:m+'-01'});
- app.innerHTML=`<div class="card"><h2>العمولات والرواتب</h2><div class="row"><input type="month" id="mm" value="${m}"><button class="o" onclick="cache.month=$('#mm').value;go('commissions')">عرض</button></div>
- <div class="tw"><table><tr><th>الحلاق</th><th>العملاء</th><th>صافي الخدمات</th><th>صافي المنتجات</th><th>الراتب</th><th>العمولة</th><th>الإجمالي</th></tr>
- ${r.map(x=>`<tr><td>${esc(x.barber)}</td><td>${x.clients}</td><td>${n2(x.service_net)}</td><td>${n2(x.product_net)}</td><td>${n2(x.base_salary)}</td><td>${n2(x.commission)}</td><th>${n2(x.total_pay)}</th></tr>`).join('')}</table></div>
- <p class="note">راتب + نسبة · النسبة على الإيراد قبل الضريبة بعد توزيع الخصم · جلسات الباقة تُحسب بقيمة الجلسة.</p></div>`};
-
-V.incidents=async()=>{const i=await q('incidents','*',x=>x.order('created_at',{ascending:false}).limit(100));
- app.innerHTML=`<div class="card"><h2>البلاغات الرقابية</h2><div class="tw"><table><tr><th>الوقت</th><th>النوع</th><th>المرجع</th><th>التفاصيل</th></tr>
- ${i.map(x=>`<tr><td>${new Date(x.created_at).toLocaleString('ar-SA')}</td><td>${({cash_variance:'فرق نقدي',cancel:'إلغاء',receipt_mismatch:'إيصال غير مطابق'})[x.kind]||x.kind}</td><td>${esc(x.ref)}</td><td>${esc(x.details)}</td></tr>`).join('')||'<tr><td colspan="4" class="note">لا بلاغات</td></tr>'}</table></div></div>`};
-
-/* 11 reports */
-V.reports=async()=>{const m=new Date();const from=new Date(m.getFullYear(),m.getMonth(),1).toISOString();
- const t=await q('tickets','barber_id,paid_at,status,invoices(total,subtotal,discount),ticket_items(kind,line_total,services(name))',x=>x.gte('opened_at',from));
- const paid=t.filter(x=>x.status=='paid');const inv=x=>x.invoices?.[0]||x.invoices||{};
- const rev=paid.reduce((a,x)=>a+Number(inv(x).total||0),0), sub=paid.reduce((a,x)=>a+Number(inv(x).subtotal||0),0), dis=paid.reduce((a,x)=>a+Number(inv(x).discount||0),0);
- const bySvc={},byH={};paid.forEach(x=>{x.ticket_items.filter(i=>i.kind=='service').forEach(i=>{bySvc[i.services.name]=(bySvc[i.services.name]||0)+Number(i.line_total)});const h=new Date(x.paid_at).getHours();byH[h]=(byH[h]||0)+1});
- const top=Object.entries(bySvc).sort((a,b)=>b[1]-a[1]);const peak=Object.entries(byH).sort((a,b)=>b[1]-a[1])[0];
- app.innerHTML=`<div class="card"><h2>تقرير الشهر الحالي</h2><div class="kp"><div class="k"><small>الإيراد شامل</small><b>${n2(rev)}</b></div><div class="k"><small>قبل الضريبة</small><b>${n2(sub)}</b></div><div class="k"><small>الضريبة</small><b>${n2(rev-sub)}</b></div><div class="k"><small>الخصومات</small><b>${n2(dis)}</b></div><div class="k"><small>متوسط الفاتورة</small><b>${n2(paid.length?rev/paid.length:0)}</b></div><div class="k"><small>ملغاة</small><b>${t.filter(x=>x.status=='cancelled').length}</b></div></div></div>
- <div class="grid"><div class="card"><h2>الحلاقون</h2><div class="tw"><table><tr><th>الحلاق</th><th>العملاء</th><th>الإيراد</th></tr>${cache.barbers.map(b=>{const p=paid.filter(x=>x.barber_id==b.user_id);return `<tr><td>${esc(b.full_name)}</td><td>${p.length}</td><td>${n2(p.reduce((a,x)=>a+Number(inv(x).total||0),0))}</td></tr>`}).join('')}</table></div></div>
- <div class="card"><h2>الخدمات</h2><div class="tw"><table><tr><th>الخدمة</th><th>الإيراد</th></tr>${top.map(([k,v])=>`<tr><td>${esc(k)}</td><td>${n2(v)}</td></tr>`).join('')||'<tr><td class="note">لا بيانات</td></tr>'}</table></div>
- <p class="note">وقت الذروة: ${peak?peak[0]+':00':'—'}</p></div></div>
- <p class="note">المصروفات وصافي الربح من النظام المحاسبي (قيود)، لا من هذه المنظومة.</p>`};
-
-/* 8 settings */
-V.settings=async()=>{const s=await q('services','*',x=>x.order('name'));const pay=await q('barber_pay','*');const pr=await q('products','*');
- app.innerHTML=`<div class="card"><h2>الخدمات والأسعار</h2><p class="note">الأسعار شاملة الضريبة · كل تعديل يُسجَّل قبل/بعد في سجل التدقيق</p><div class="tw"><table><tr><th>الخدمة</th><th>السعر</th><th>المدة</th><th>نشطة</th><th></th></tr>
- ${s.map(x=>`<tr><td><input id="sn-${x.id}" value="${esc(x.name)}"></td><td><input id="sp-${x.id}" type="number" value="${x.price}" style="width:90px"></td><td><input id="sd-${x.id}" type="number" value="${x.duration_min}" style="width:70px"></td><td><input id="sa-${x.id}" type="checkbox" ${x.active?'checked':''} style="width:auto"></td><td><button class="o" onclick="saveS('${x.id}')">حفظ</button></td></tr>`).join('')}
- <tr><td><input id="sn-new" placeholder="خدمة جديدة"></td><td><input id="sp-new" type="number" style="width:90px"></td><td><input id="sd-new" type="number" value="30" style="width:70px"></td><td><input id="sa-new" type="checkbox" checked style="width:auto"></td><td><button class="g" onclick="saveS('new')">إضافة</button></td></tr></table></div></div>
- <div class="card"><h2>الحلاقون — راتب + نسبة</h2><div class="tw"><table><tr><th>الحلاق</th><th>الراتب</th><th>% الخدمات</th><th>% المنتجات</th><th></th></tr>
- ${cache.barbers.map(b=>{const p=pay.find(x=>x.user_id==b.user_id)||{};return `<tr><td>${esc(b.full_name)}</td><td><input id="bs-${b.user_id}" type="number" value="${p.base_salary||0}" style="width:100px"></td><td><input id="bp-${b.user_id}" type="number" value="${p.service_pct||0}" style="width:70px"></td><td><input id="bq-${b.user_id}" type="number" value="${p.product_pct||0}" style="width:70px"></td><td><button class="o" onclick="saveP('${b.user_id}')">حفظ</button></td></tr>`}).join('')}</table></div></div>
- <div class="card"><h2>المخزون</h2><div class="tw"><table><tr><th>المنتج</th><th>السعر</th><th>المخزون</th><th>الحد</th></tr>${pr.map(x=>`<tr><td>${esc(x.name)}</td><td>${n2(x.price)}</td><td>${x.stock<=x.min_stock?`<span class="pill cancelled">${x.stock}</span>`:x.stock}</td><td>${x.min_stock}</td></tr>`).join('')}</table></div></div>`};
-window.saveS=async id=>{await rpc('set_service',{p_id:id=='new'?null:id,p_name:$('#sn-'+id).value,p_price:Number($('#sp-'+id).value),p_duration:Number($('#sd-'+id).value),p_active:$('#sa-'+id).checked},'حُفظ وسُجّل في التدقيق');await loadRefs();go('settings')};
-window.saveP=async id=>{await rpc('set_barber_pay',{p_user:id,p_salary:Number($('#bs-'+id).value),p_spct:Number($('#bp-'+id).value),p_ppct:Number($('#bq-'+id).value)},'حُفظ');go('settings')};
-V.audit=async()=>{const a=await q('audit_log','*',x=>x.order('id',{ascending:false}).limit(150));
- app.innerHTML=`<div class="card"><h2>سجل التدقيق</h2><p class="note">لا يُعدَّل ولا يُحذف</p><div class="tw"><table><tr><th>الوقت</th><th>الجدول</th><th>العملية</th><th>من</th><th>التغيير</th></tr>
- ${a.map(x=>{let ch='';if(x.before&&x.after){ch=Object.keys(x.after).filter(k=>JSON.stringify(x.after[k])!==JSON.stringify(x.before[k])).map(k=>`${k}: ${esc(x.before[k])} ← ${esc(x.after[k])}`).join(' · ')}
-  return `<tr><td>${new Date(x.at).toLocaleString('ar-SA')}</td><td>${x.table_name}</td><td>${x.action}</td><td>${esc(cache.who?.[x.actor]||'')}</td><td style="white-space:normal;max-width:420px">${ch}</td></tr>`}).join('')}</table></div></div>`};
-
-/* 9 public booking */
-async function showBooking(){const c=await rpc('public_catalog');$('#nav').hidden=true;let sel={svc:null,bar:null};
- app.innerHTML=`<div class="card login"><h2>احجز موعدك</h2><form id="bf" class="grid" style="grid-template-columns:1fr">
- <select id="bb">${(c.branches||[]).map(b=>`<option value="${b.id}">${esc(b.name)}</option>`).join('')}</select>
- <div><b>الخدمة</b><div id="bsv">${(c.services||[]).map(s=>`<span class="chip" data-id="${s.id}">${esc(s.name)} · ${s.duration} د · ${n2(s.price)} ر.س</span>`).join('')}</div><p class="note">الأسعار شاملة الضريبة</p></div>
- <div><b>الحلاق</b><div id="bbr"><span class="chip on" data-id="">أي حلاق</span>${(c.barbers||[]).map(s=>`<span class="chip" data-id="${s.id}">${esc(s.name)}</span>`).join('')}</div></div>
- <input id="bt" type="datetime-local" required><input id="bn" placeholder="الاسم" required><input id="bp" placeholder="الجوال 05XXXXXXXX" pattern="05[0-9]{8}" required>
- <label><input id="bc" type="checkbox" style="width:auto"> أوافق على استلام عروض الصالون (اختياري، ويمكن الإيقاف لاحقًا)</label>
- <button class="g">تأكيد الحجز</button></form><p class="note">الدفع المقدم الاختياري يحتاج ربط بوابة دفع (مدى/Apple Pay/تمارا) — غير مفعّل بعد.</p>
- <button class="o" onclick="init()">رجوع</button></div>`;
- const pick=(box,key)=>$(box).onclick=e=>{const ch=e.target.closest('.chip');if(!ch)return;$(box).querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));ch.classList.add('on');sel[key]=ch.dataset.id||null};
- pick('#bsv','svc');pick('#bbr','bar');
- $('#bf').onsubmit=async e=>{e.preventDefault();if(!sel.svc)return toast('اختر الخدمة',false);
-  await rpc('create_booking',{p_branch:$('#bb').value,p_service:sel.svc,p_barber:sel.bar,p_start:new Date($('#bt').value).toISOString(),p_name:$('#bn').value,p_phone:$('#bp').value,p_consent:$('#bc').checked},'تم الحجز ✓ نراك في موعدك');}}
-init();
+boot();
 </script></body></html>
